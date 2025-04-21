@@ -117,13 +117,13 @@
     - [X] `ArticleData` Pydantic 모델 정의 (기존과 유사: `title`, `content`, `source`, `published`, `url`). `source` 필드는 이제 "NewsAPI", "NYTimes", "Naver News", "Naver Blog", "Naver Cafe", "Yahoo Finance Trending", "Google Trends", "Naver DataLab" 등을 포함할 수 있음.
     - [X] `CollectedData` Pydantic 모델 정의. 필드를 좀 더 일반화하거나 (예: `articles: List[ArticleData]`), 소스별 리스트를 유지할 수 있음 (예: `news: List`, `blogs: List`, ..., `financial_trends: List`, `search_trends: List`). 후자가 후처리 단계에서 소스별 분석에 유리할 수 있음.
 
-- [ ] **2.8 도구 통합 및 상태 관리:**
-    - [ ] `DataCollectionAgent.process` 메서드 구현:
-        - 모든 데이터 수집 도구 (뉴스, 블로그/카페, 금융 트렌드, 검색 트렌드) 호출.
-        - (선택적 크롤링) 뉴스/블로그 결과 URL 기반 `WebCrawlingTool` 호출하여 `content` 보강.
-        - 모든 결과를 `CollectedData` 모델 객체로 통합 및 유효성 검사 (다양한 소스 처리).
-        - `ctx.state["collected_data"] = collected_data_model.model_dump()` 형태로 세션 상태에 저장.
-        - 성공/실패 및 소스별 수집 건수 포함한 상태 메시지 반환.
+- [X] **2.8 도구 통합 및 상태 관리:**
+    - [X] `DataCollectionAgent.process` 메서드 구현:
+        - [X] 모든 데이터 수집 도구 (뉴스, 블로그/카페, 금융 트렌드, 검색 트렌드) 호출.
+        - [X] (선택적 크롤링) 뉴스/블로그 결과 URL 기반 `WebCrawlingTool` 호출하여 `content` 보강.
+        - [X] 모든 결과를 `CollectedData` 모델 객체로 통합 및 유효성 검사 (다양한 소스 처리).
+        - [X] `ctx.state["collected_data"] = collected_data_model.model_dump()` 형태로 세션 상태에 저장.
+        - [X] 성공/실패 및 소스별 수집 건수 포함한 상태 메시지 반환.
 
 ## 3단계: 키워드 추출 에이전트 구현
 

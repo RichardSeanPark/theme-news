@@ -20,14 +20,20 @@ class ArticleData(BaseModel):
         if isinstance(value, datetime):
             return value
         if isinstance(value, str):
+            # ISO 8601 형식 시도 (선호)
             try:
-                # 다양한 형식의 날짜 문자열 파싱 시도
-                # 예: ISO 8601, RFC 1123 (웹 표준), 특정 API 형식 등
-                # 여기서는 간단하게 ISO 8601만 처리 (필요시 확장)
                 return datetime.fromisoformat(value.replace('Z', '+00:00'))
-            except (ValueError, TypeError):
-                logger.warning(f"Could not parse date string: {value}. Returning None.")
-                return None
+            except ValueError:
+                # RFC 1123 형식 시도 (예: 'Mon, 01 Jan 2024 09:00:00 +0900')
+                try:
+                    return datetime.strptime(value, '%a, %d %b %Y %H:%M:%S %z')
+                except ValueError:
+                    # YYYYMMDD 형식 시도 (예: '20240101')
+                    try:
+                        return datetime.strptime(value, '%Y%m%d')
+                    except ValueError:
+                        logger.warning(f"Could not parse date string: {value}. Returning None.")
+                        return None
         logger.warning(f"Unsupported type for published date: {type(value)}. Returning None.")
         return None
 

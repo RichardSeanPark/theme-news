@@ -581,7 +581,7 @@
     2.  유효한 형식의 URL로 `fetch_full_content_func`를 호출합니다.
     3.  반환값이 `None`인지 확인합니다.
     4.  로그 출력에 타임아웃 관련 오류 메시지가 포함되어 있는지 확인합니다.
-*   **예상 결과:** `None`을 반환하고, 타임아웃 관련 오류 로그를 출력합니다.
+*   **예상 결과:** 빈 리스트를 반환하고, 타임아웃 관련 오류 로그를 출력합니다.
 
 ### 2.6.6. `fetch_full_content` 요청 간 지연 테스트 (모킹)
 
@@ -688,3 +688,65 @@
 - [X] **데이터 추가 및 확인**: 각 소스별 필드(예: `newsapi_articles`)에 `ArticleData` 인스턴스 리스트를 할당하고, 해당 필드에 데이터가 올바르게 저장되는지 확인합니다.
 - [X] **`get_all_articles` 메서드**: 여러 소스에 데이터가 포함된 `CollectedData` 인스턴스에서 `get_all_articles()` 메서드 호출 시, 모든 소스의 `ArticleData`가 포함된 단일 리스트를 올바르게 반환하는지 확인합니다.
 - [X] **`log_summary` 메서드**: `CollectedData` 인스턴스에서 `log_summary()` 메서드 호출 시, 각 소스별 항목 수와 총 항목 수가 포함된 요약 정보가 INFO 레벨로 로깅되는지 확인합니다 (로그 캡처 필요).
+
+## 2.8. 도구 통합 및 상태 관리 (`DataCollectionAgent.process`)
+
+### 2.8.1. 모든 데이터 수집 도구 호출 및 결과 통합
+
+- [X] # 체크 완료
+*   **테스트 케이스 ID:** `test_data_collection_process_integration`
+*   **우선순위:** 높음
+*   **유형:** 통합 테스트
+*   **설명:** `DataCollectionAgent.process` 메서드가 각 데이터 수집 도구(News, Blog/Cafe, Financial, Search)를 올바르게 호출하고, 반환된 데이터를 `CollectedData` 모델로 통합하여 `ctx.state`에 저장하는지 확인합니다. (선택적 크롤링은 이 테스트에서 제외)
+*   **단계:**
+    1.  `DataCollectionAgent` 인스턴스를 생성합니다.
+    2.  `NewsApiTool`, `BlogCafeApiTool`, `FinancialTrendTool`, `SearchTrendTool`의 각 fetch 메서드들을 모킹(mock)합니다. 각 모킹된 메서드는 미리 정의된 **딕셔너리** 리스트를 반환하도록 설정합니다. # 수정: 객체 -> 딕셔너리
+    3.  `google.adk.agents.invocation_context.InvocationContext` 객체를 모킹합니다. (초기 `state`는 비어 있음) # 수정: Context -> InvocationContext
+    4.  `agent.process(ctx)`를 호출합니다.
+    5.  각 모킹된 도구 메서드가 한 번씩 호출되었는지 확인합니다.
+    6.  `ctx.state["collected_data"]`가 존재하는지 확인합니다.
+    7.  `ctx.state["collected_data"]`의 값이 `CollectedData` 모델의 구조와 일치하고, 각 소스별로 모킹된 데이터가 올바르게 포함되었는지 확인합니다.
+    8.  반환된 상태 메시지에 각 소스별 수집 건수가 올바르게 포함되었는지 확인합니다.
+*   **예상 결과:**
+    - 모든 모킹된 도구 메서드가 호출됩니다.
+    - `ctx.state["collected_data"]`에 모든 소스의 모킹 데이터가 포함된 `CollectedData` 딕셔너리가 저장됩니다.
+    - 반환된 상태 메시지가 예상된 형식과 수집 건수를 포함합니다.
+
+### 2.8.2. 개별 도구 호출 시 오류 처리
+
+- [X] # 체크 완료
+*   **테스트 케이스 ID:** `test_data_collection_process_error_handling`
+*   **우선순위:** 높음
+*   **유형:** 예외 처리 테스트
+*   **설명:** 특정 데이터 수집 도구 호출 시 예외가 발생했을 때, `process` 메서드가 오류를 적절히 처리하고 상태 메시지에 오류 정보를 포함하여 반환하는지 확인합니다.
+*   **단계:**
+    1.  `DataCollectionAgent` 인스턴스를 생성합니다.
+    2.  `NewsApiTool`의 fetch 메서드 중 하나가 `Exception`을 발생시키도록 모킹합니다.
+    3.  다른 도구들의 메서드는 정상적으로 **딕셔너리** 리스트를 반환하도록 모킹합니다. # 수정: 객체 -> 딕셔너리
+    4.  `InvocationContext` 객체를 모킹합니다. # 수정: Context -> InvocationContext
+    5.  `agent.process(ctx)`를 호출합니다.
+    6.  `ctx.state["collected_data"]`에 오류가 발생하지 않은 소스의 데이터가 포함되어 있는지 확인합니다.
+    7.  반환된 상태 메시지에 "오류 발생" 문구와 함께 예외가 발생한 소스("newsapi" 등) 및 오류 정보가 포함되어 있는지 확인합니다. # 수정: 소스 이름 구체화
+*   **예상 결과:**
+    - `process` 메서드가 예외를 일으키지 않고 정상적으로 완료됩니다.
+    - `ctx.state["collected_data"]`에 정상 수집된 데이터가 저장됩니다.
+    - 반환된 상태 메시지에 오류 발생 정보가 포함됩니다.
+
+### 2.8.3. 선택적 웹 크롤링 로직 (구현 시)
+
+- [X] # 체크 완료
+*   **테스트 케이스 ID:** `test_data_collection_process_optional_crawling`
+*   **우선순위:** 중간
+*   **유형:** 통합 테스트
+*   **설명:** (선택적 웹 크롤링 로직이 구현된 경우) `process` 메서드가 URL은 있지만 `content`가 비어있는 데이터(딕셔너리)에 대해 `WebCrawlingTool.fetch_full_content`를 호출하고 결과를 업데이트하는지 확인합니다.
+*   **단계:**
+    1.  `DataCollectionAgent` 인스턴스를 생성합니다.
+    2.  뉴스/블로그 도구의 fetch 메서드를 모킹하여 `url`은 있지만 `content`는 비어있는 **딕셔너리**를 반환하도록 설정합니다. # 수정: 객체 -> 딕셔너리
+    3.  `WebCrawlingTool.fetch_full_content` 메서드를 모킹하여 특정 URL에 대해 본문 텍스트를 반환하도록 설정합니다.
+    4.  `InvocationContext` 객체를 모킹합니다. # 수정: Context -> InvocationContext
+    5.  `agent.process(ctx)`를 호출합니다.
+    6.  모킹된 `WebCrawlingTool.fetch_full_content`가 예상된 URL로 호출되었는지 확인합니다.
+    7.  `ctx.state["collected_data"]` 내 해당 데이터의 `content` 필드가 크롤링 결과로 업데이트되었는지 확인합니다. (모델 객체로 로드 후 확인)
+*   **예상 결과:**
+    - `WebCrawlingTool.fetch_full_content`가 호출됩니다.
+    - `ctx.state["collected_data"]` 내 해당 항목의 `content`가 업데이트됩니다.
