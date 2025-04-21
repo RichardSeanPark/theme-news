@@ -25,3 +25,14 @@
 *   **단계:**
     1.  `theme_news_agent/` 디렉토리 내부에 `theme_news_agent/` 디렉토리가 존재하는지 확인합니다.
 *   **예상 결과:** `theme_news_agent/theme_news_agent/` 디렉토리가 존재합니다.
+
+#### 1.1.3. `__init__.py` 파일 생성: `theme_news_agent/theme_news_agent/__init__.py`
+
+- [X]
+*   **테스트 케이스 ID:** `test_init_file_creation`
+*   **우선순위:** 높음
+*   **유형:** 기능 테스트
+*   **설명:** 핵심 패키지 디렉토리 내에 `__init__.py` 파일이 성공적으로 생성되었는지 확인합니다.
+*   **단계:**
+    1.  `theme_news_agent/theme_news_agent/` 디렉토리 내부에 `__init__.py` 파일이 존재하는지 확인합니다.
+*   **예상 결과:** `theme_news_agent/theme_news_agent/__init__.py` 파일이 존재합니다.

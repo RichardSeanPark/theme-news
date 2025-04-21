@@ -23,7 +23,7 @@ alwaysApply: false
     *   `testcase-guide.md`에 따른 테스트 진행이 **불가능**하거나 해당 가이드에 명시된 테스트 기준을 충족할 수 없는 경우, 해당 항목의 체크박스를 `[-]`로 수정하고 그 이유를 명확히 기록합니다.
 8.  **Git 버전 관리**: TODO 항목 체크박스 수정 완료 후, 다음 Git 명령을 **반드시** 순서대로 실행하여 변경 사항을 저장하고 원격 저장소에 푸시합니다.
     *   `git add .`
-    *   `git commit -m "Complete TODO item X.Y: [간단한 설명]"` (X.Y는 완료된 TODO 항목 번호)
+    *   `git commit -m "Complete TODO item X.Y: [한글로 간단한 설명]"` (X.Y는 완료된 TODO 항목 번호)
     *   `git push origin main`
 
 ## 금지 사항
