@@ -137,3 +137,18 @@
 *   **단계:**
     1.  `theme_news_agent/` 디렉토리 내부에 `tests/` 디렉토리가 존재하는지 확인합니다.
 *   **예상 결과:** `theme_news_agent/tests/` 디렉토리가 존재합니다.
+
+## 2. 의존성 관리
+
+### 2.1. Poetry 초기화
+
+#### 2.1.1. `pyproject.toml` 파일 생성
+
+- [X]
+*   **테스트 케이스 ID:** `test_pyproject_toml_creation`
+*   **우선순위:** 높음
+*   **유형:** 기능 테스트
+*   **설명:** `poetry init` 실행 후 `theme_news_agent/` 디렉토리 내부에 `pyproject.toml` 파일이 성공적으로 생성되었는지 확인합니다.
+*   **단계:**
+    1.  `theme_news_agent/` 디렉토리 내부에 `pyproject.toml` 파일이 존재하는지 확인합니다.
+*   **예상 결과:** `theme_news_agent/pyproject.toml` 파일이 존재합니다.

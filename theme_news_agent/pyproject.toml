@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "theme-news-agent"
+version = "0.1.0"
+description = "LLM Trend Theme Extraction AI Agent"
+authors = ["RichardSeanPark <your_email@example.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.13"
+
+[tool.poetry.group.dev.dependencies]
+toml = "^0.10.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api" 
