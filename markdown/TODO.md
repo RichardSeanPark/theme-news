@@ -136,8 +136,8 @@
     - [X] `Design.md` 섹션 4 (1) 및 `Dev_Plan.md` 섹션 5.2 참고하여 프롬프트 작성. LLM에게 입력 텍스트(제목+요약)에서 주요 키워드/엔티티(인물, 조직, 이벤트, 제품, 기술, 주제 명사구 등) 추출 지시.
     - [X] 출력 형식을 명확히 지정: **반드시 JSON 형식의 키워드 문자열 리스트로 반환**하도록 요구. 예: `["키워드1", "키워드2", ...]`.
 
-- [ ] **3.3 에이전트 로직 구현:**
-    - [ ] `KeywordExtractionAgent.process` 메서드 구현:
+- [X] **3.3 에이전트 로직 구현:**
+    - [X] `KeywordExtractionAgent.process` 메서드 구현:
         - `ctx.state.get("collected_data")` 로드.
         - LLM 입력 생성: 다양한 소스의 `title` 및 `content` 필드를 적절히 조합/선택하여 LLM 입력 구성. (예: 검색어 자체를 중요한 입력으로 간주).
         - `self.generate_content` 또는 유사 메서드 호출하여 LLM 실행.
