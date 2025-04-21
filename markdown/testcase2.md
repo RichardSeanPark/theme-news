@@ -220,4 +220,62 @@
     2.  테스트용 키워드 리스트 정의.
     3.  `calculate_keyword_frequencies` 함수 호출.
     4.  결과에서 각 키워드의 빈도수가 올바른 소스 카테고리별로 집계되었는지 확인합니다.
-*   **예상 결과:** 다양한 소스가 올바른 카테고리로 매핑되어 빈도수가 집계됨. 
+*   **예상 결과:** 다양한 소스가 올바른 카테고리로 매핑되어 빈도수가 집계됨.
+
+## 3.5 상태 관리
+
+### 3.5.1. `keyword_results` 상태 저장 테스트
+
+- [X]
+*   **테스트 케이스 ID:** `test_process_stores_keyword_results`
+*   **우선순위:** 높음
+*   **유형:** 단위 테스트 (모킹 사용)
+*   **설명:** `KeywordExtractionAgent.process`가 성공적으로 실행된 후, 계산된 키워드 빈도 결과가 `ctx.state["keyword_results"]`에 올바른 형식으로 저장되는지 확인합니다.
+*   **단계:**
+    1.  `KeywordExtractionAgent` 인스턴스를 생성합니다.
+    2.  테스트용 `CollectedData` 딕셔너리를 생성합니다.
+    3.  `InvocationContext` 객체를 모킹하고, `state["collected_data"]`를 설정합니다.
+    4.  `LLMRegistry.new_llm`을 모킹하여 모의 LLM 인스턴스를 반환하도록 설정합니다.
+    5.  모의 LLM 인스턴스의 `generate_content_async`가 유효한 키워드 JSON 리스트 (예: `["ai"]`)를 반환하도록 설정합니다.
+    6.  `calculate_keyword_frequencies` 함수를 **모킹**하여 예상되는 빈도 결과 딕셔너리 리스트 (예: `[{"keyword": "ai", "frequency": {"total": ...}}]`)를 반환하도록 설정합니다.
+    7.  `agent.process(mock_ctx)`를 호출합니다.
+    8.  `mock_ctx.state["keyword_results"]`의 값이 6단계에서 설정한 예상 빈도 결과와 일치하는지 확인합니다.
+*   **예상 결과:** `calculate_keyword_frequencies`의 반환값이 `ctx.state["keyword_results"]`에 저장됩니다.
+
+### 3.5.2. 키워드 없을 시 빈 결과 저장 테스트
+
+- [X]
+*   **테스트 케이스 ID:** `test_process_stores_empty_results_if_no_keywords`
+*   **우선순위:** 중간
+*   **유형:** 단위 테스트 (모킹 사용)
+*   **설명:** LLM이 빈 키워드 리스트(`[]`)를 반환했을 때, `ctx.state["keyword_results"]`에 빈 리스트가 저장되는지 확인합니다.
+*   **단계:**
+    1.  `KeywordExtractionAgent` 인스턴스를 생성합니다.
+    2.  테스트용 `CollectedData` 딕셔너리를 생성합니다.
+    3.  `InvocationContext` 객체를 모킹하고, `state["collected_data"]`를 설정합니다.
+    4.  `LLMRegistry.new_llm`을 모킹합니다.
+    5.  모의 LLM 인스턴스의 `generate_content_async`가 빈 JSON 리스트 문자열 (`"[]"`)을 반환하도록 설정합니다.
+    6.  `calculate_keyword_frequencies` 함수가 호출되지 **않는지** 확인하기 위해 모킹합니다 (선택 사항).
+    7.  `agent.process(mock_ctx)`를 호출합니다.
+    8.  `mock_ctx.state["keyword_results"]`가 빈 리스트(`[]`)인지 확인합니다.
+*   **예상 결과:** `ctx.state["keyword_results"]`에 빈 리스트가 저장됩니다.
+
+### 3.5.3. 빈도 계산 실패 시 빈 결과 저장 테스트
+
+- [X]
+*   **테스트 케이스 ID:** `test_process_stores_empty_results_on_freq_calc_error`
+*   **우선순위:** 중간
+*   **유형:** 단위 테스트 (모킹 사용)
+*   **설명:** `calculate_keyword_frequencies` 함수 호출 중 예외가 발생했을 때, 오류가 로깅되고 `ctx.state["keyword_results"]`에 빈 리스트가 저장되는지 확인합니다.
+*   **단계:**
+    1.  `KeywordExtractionAgent` 인스턴스를 생성합니다.
+    2.  테스트용 `CollectedData` 딕셔너리를 생성합니다.
+    3.  `InvocationContext` 객체를 모킹하고, `state["collected_data"]`를 설정합니다.
+    4.  `LLMRegistry.new_llm`을 모킹합니다.
+    5.  모의 LLM 인스턴스의 `generate_content_async`가 유효한 키워드 JSON 리스트를 반환하도록 설정합니다.
+    6.  `calculate_keyword_frequencies` 함수를 모킹하여 `Exception`을 발생시키도록 설정합니다.
+    7.  로그 출력을 캡처하도록 설정합니다.
+    8.  `agent.process(mock_ctx)`를 호출합니다.
+    9.  로그 출력에 "키워드 빈도 계산 중 오류 발생" 과 유사한 오류 메시지가 포함되어 있는지 확인합니다.
+    10. `mock_ctx.state["keyword_results"]`가 빈 리스트(`[]`)인지 확인합니다.
+*   **예상 결과:** 오류 로깅 후, `ctx.state["keyword_results"]`에 빈 리스트가 저장됩니다. 

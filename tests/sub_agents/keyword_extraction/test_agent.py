@@ -71,28 +71,35 @@ async def async_generator_from_list(items):
 # --- Tests for process method --- #
 
 @pytest.mark.asyncio
-@patch('google.adk.models.registry.LLMRegistry.new_llm') # new_llm 직접 패치
-async def test_process_success_with_mocked_llm(mock_new_llm, mock_context, sample_collected_data_dict): # mock_new_llm 파라미터 추가
-    """3.3.3: 정상 처리 및 LLM 응답 파싱 성공 테스트 (모킹 수정)."""
-    # 모의 LLM 객체 생성 및 설정
+@patch('theme_news_agent.sub_agents.keyword_extraction.agent.calculate_keyword_frequencies') # Mock frequency calc
+@patch('google.adk.models.registry.LLMRegistry.new_llm')
+async def test_process_success_with_mocked_llm(mock_new_llm, mock_calc_freq, mock_context, sample_collected_data_dict):
+    """3.3.3: 정상 처리 및 LLM 응답 파싱 성공 테스트 (상태 저장 방식 변경 반영)."""
+    # --- Mock LLM --- #
     mock_llm_instance = MagicMock()
     mock_llm_text_response = '```json\n["키워드1", "키워드2", "테스트 기사"]\n```'
     mock_response = MagicMock()
     mock_response.text = mock_llm_text_response
     mock_llm_instance.generate_content_async.return_value = async_generator_from_list([mock_response])
-
-    # new_llm 호출 시 모의 LLM 인스턴스 반환하도록 설정
     mock_new_llm.return_value = mock_llm_instance
 
+    # --- Mock calculate_keyword_frequencies --- #
+    expected_frequency_results = [
+        {"keyword": "키워드1", "frequency": {"total": 1, "test_source": 1}},
+        {"keyword": "키워드2", "frequency": {"total": 1, "test_source": 1}},
+        {"keyword": "테스트 기사", "frequency": {"total": 0}} # 예시 빈도
+    ]
+    mock_calc_freq.return_value = expected_frequency_results
+
+    # --- Agent setup --- #
     agent = KeywordExtractionAgent()
     mock_context.state["collected_data"] = sample_collected_data_dict
 
-    # await agent.process 호출
+    # --- Run process --- #
     result = await agent.process(mock_context)
 
-    # new_llm 호출 확인 (모델 이름으로 호출되었는지 확인)
+    # --- Assertions --- #
     mock_new_llm.assert_called_once_with(agent.model)
-    # generate_content_async 호출 확인 (모의 LLM 인스턴스 사용)
     mock_llm_instance.generate_content_async.assert_called_once()
     call_args, _ = mock_llm_instance.generate_content_async.call_args
     llm_request_arg = call_args[0]
@@ -100,15 +107,26 @@ async def test_process_success_with_mocked_llm(mock_new_llm, mock_context, sampl
     assert "테스트 기사 1" in llm_request_arg.contents[0].parts[0].text
     assert "추출된 키워드 (JSON 리스트):" in llm_request_arg.contents[0].parts[0].text
 
-    # 결과 확인
-    assert mock_context.state.get("extracted_keywords_raw") == ["키워드1", "키워드2", "테스트 기사"]
-    assert "키워드 추출 완료" in result
-    assert "3개 키워드 추출됨" in result
+    # Verify calculate_keyword_frequencies was called
+    extracted_keywords = ["키워드1", "키워드2", "테스트 기사"]
+    collected_data_obj = CollectedData(**sample_collected_data_dict)
+    mock_calc_freq.assert_called_once_with(extracted_keywords, collected_data_obj)
+
+    # Verify state update (keyword_results 확인)
+    assert "keyword_results" in mock_context.state
+    assert mock_context.state["keyword_results"] == expected_frequency_results
+    assert mock_context.state.get("extracted_keywords_raw") is None # 더 이상 사용되지 않음
+
+    # Verify return message
+    assert "키워드 추출 및 빈도 계산 완료" in result
+    assert "3개 키워드 처리됨" in result
 
 @pytest.mark.asyncio
-@patch('google.adk.models.registry.LLMRegistry.new_llm') # new_llm 직접 패치
-async def test_process_llm_response_parsing_failure(mock_new_llm, mock_context, sample_collected_data_dict, caplog): # mock_new_llm 파라미터 추가
-    """3.3.4: LLM 응답 파싱 실패 시 처리 테스트 (모킹 수정)."""
+@patch('theme_news_agent.sub_agents.keyword_extraction.agent.calculate_keyword_frequencies') # Mock freq calc
+@patch('google.adk.models.registry.LLMRegistry.new_llm')
+async def test_process_llm_response_parsing_failure(mock_new_llm, mock_calc_freq, mock_context, sample_collected_data_dict, caplog):
+    """3.3.4: LLM 응답 파싱 실패 시 처리 테스트 (상태 저장 방식 변경 반영)."""
+    # --- Mock LLM --- #
     mock_llm_instance = MagicMock()
     mock_llm_text_response = '이것은 JSON이 아닙니다.'
     mock_response = MagicMock()
@@ -116,24 +134,37 @@ async def test_process_llm_response_parsing_failure(mock_new_llm, mock_context, 
     mock_llm_instance.generate_content_async.return_value = async_generator_from_list([mock_response])
     mock_new_llm.return_value = mock_llm_instance
 
+    # --- Agent setup --- #
     agent = KeywordExtractionAgent()
     mock_context.state["collected_data"] = sample_collected_data_dict
 
+    # --- Run process --- #
     result = await agent.process(mock_context)
 
+    # --- Assertions --- #
     mock_new_llm.assert_called_once_with(agent.model)
     mock_llm_instance.generate_content_async.assert_called_once()
-    # 수정: JSON 리스트를 찾지 못했다는 경고 로그 확인
+    # Verify frequency calculation was NOT called
+    mock_calc_freq.assert_not_called()
+
+    # Verify logs
     assert "LLM 응답에서 유효한 JSON 리스트를 찾지 못했습니다" in caplog.text
-    # assert "Expecting value" in caplog.text # 에러 로그 대신 경고 확인
-    assert mock_context.state.get("extracted_keywords_raw") == []
-    assert "키워드 추출 완료" in result
-    assert "0개 키워드 추출됨" in result
+
+    # Verify state update (should store empty list in keyword_results)
+    assert "keyword_results" in mock_context.state
+    assert mock_context.state["keyword_results"] == []
+    assert mock_context.state.get("extracted_keywords_raw") is None
+
+    # Verify return message
+    assert "키워드 추출 및 빈도 계산 완료" in result
+    assert "0개 키워드 처리됨" in result
 
 @pytest.mark.asyncio
-@patch('google.adk.models.registry.LLMRegistry.new_llm') # new_llm 직접 패치
-async def test_process_llm_response_invalid_json_structure(mock_new_llm, mock_context, sample_collected_data_dict, caplog): # mock_new_llm 파라미터 추가
-    """3.3.4 (추가): LLM 응답이 JSON이지만 리스트가 아닐 때 (모킹 수정)."""
+@patch('theme_news_agent.sub_agents.keyword_extraction.agent.calculate_keyword_frequencies') # Mock freq calc
+@patch('google.adk.models.registry.LLMRegistry.new_llm')
+async def test_process_llm_response_invalid_json_structure(mock_new_llm, mock_calc_freq, mock_context, sample_collected_data_dict, caplog):
+    """3.3.4 (추가): LLM 응답이 JSON이지만 리스트가 아닐 때 (상태 저장 방식 변경 반영)."""
+    # --- Mock LLM --- #
     mock_llm_instance = MagicMock()
     mock_llm_text_response = '{"key": "value"}' # 리스트가 아닌 JSON
     mock_response = MagicMock()
@@ -141,19 +172,30 @@ async def test_process_llm_response_invalid_json_structure(mock_new_llm, mock_co
     mock_llm_instance.generate_content_async.return_value = async_generator_from_list([mock_response])
     mock_new_llm.return_value = mock_llm_instance
 
+    # --- Agent setup --- #
     agent = KeywordExtractionAgent()
     mock_context.state["collected_data"] = sample_collected_data_dict
 
+    # --- Run process --- #
     result = await agent.process(mock_context)
 
+    # --- Assertions --- #
     mock_new_llm.assert_called_once_with(agent.model)
     mock_llm_instance.generate_content_async.assert_called_once()
-    # 수정: JSON 리스트를 찾지 못했다는 경고 로그 확인
+    # Verify frequency calculation was NOT called
+    mock_calc_freq.assert_not_called()
+
+    # Verify logs
     assert "LLM 응답에서 유효한 JSON 리스트를 찾지 못했습니다" in caplog.text
-    # assert "파싱된 결과가 리스트 타입이 아닙니다" in caplog.text # 에러 로그 대신 경고 확인
-    assert mock_context.state.get("extracted_keywords_raw") == [] # 결과는 빈 리스트여야 함
-    assert "키워드 추출 완료" in result
-    assert "0개 키워드 추출됨" in result
+
+    # Verify state update (should store empty list in keyword_results)
+    assert "keyword_results" in mock_context.state
+    assert mock_context.state["keyword_results"] == []
+    assert mock_context.state.get("extracted_keywords_raw") is None
+
+    # Verify return message
+    assert "키워드 추출 및 빈도 계산 완료" in result
+    assert "0개 키워드 처리됨" in result
 
 @pytest.mark.asyncio
 @patch('google.adk.models.registry.LLMRegistry.new_llm') # new_llm 직접 패치
@@ -173,4 +215,136 @@ async def test_process_llm_call_failure(mock_new_llm, mock_context, sample_colle
     mock_llm_instance.generate_content_async.assert_called_once()
     assert mock_context.state.get("extracted_keywords_raw") == []
     assert "LLM 호출 중 오류 발생" in result
-    assert "LLM API 통신 오류" in result 
+    assert "LLM API 통신 오류" in result
+
+# --- Tests for State Management (TODO 3.5) --- #
+
+@pytest.mark.asyncio
+@patch('theme_news_agent.sub_agents.keyword_extraction.agent.calculate_keyword_frequencies')
+@patch('google.adk.models.registry.LLMRegistry.new_llm')
+async def test_process_stores_keyword_results(mock_new_llm, mock_calc_freq, mock_context, sample_collected_data_dict):
+    """3.5.1: 성공 시 계산된 키워드 빈도 결과가 상태에 저장되는지 테스트합니다."""
+    # --- Mock LLM ---
+    mock_llm_instance = MagicMock()
+    mock_llm_text_response = '```json\n["ai", "ml"]\n```'
+    mock_response = MagicMock()
+    mock_response.text = mock_llm_text_response
+    mock_llm_instance.generate_content_async.return_value = async_generator_from_list([mock_response])
+    mock_new_llm.return_value = mock_llm_instance
+
+    # --- Mock calculate_keyword_frequencies ---
+    expected_frequency_results = [
+        {"keyword": "ai", "frequency": {"total": 5, "newsapi": 2, "nytimes": 3}},
+        {"keyword": "ml", "frequency": {"total": 2, "newsapi": 1, "nytimes": 1}}
+    ]
+    mock_calc_freq.return_value = expected_frequency_results
+
+    # --- Agent setup ---
+    agent = KeywordExtractionAgent()
+    mock_context.state["collected_data"] = sample_collected_data_dict
+
+    # --- Run process ---
+    result = await agent.process(mock_context)
+
+    # --- Assertions ---
+    mock_new_llm.assert_called_once_with(agent.model)
+    mock_llm_instance.generate_content_async.assert_called_once()
+
+    # Verify calculate_keyword_frequencies was called correctly
+    extracted_keywords = ["ai", "ml"]
+    collected_data_obj = CollectedData(**sample_collected_data_dict) # Pass the object
+    mock_calc_freq.assert_called_once_with(extracted_keywords, collected_data_obj)
+
+    # Verify state update
+    assert "keyword_results" in mock_context.state
+    assert mock_context.state["keyword_results"] == expected_frequency_results
+    assert mock_context.state.get("extracted_keywords_raw") is None # Should not be set anymore
+
+    # Verify return message
+    assert "키워드 추출 및 빈도 계산 완료" in result
+    assert "2개 키워드 처리됨" in result
+
+
+@pytest.mark.asyncio
+@patch('theme_news_agent.sub_agents.keyword_extraction.agent.calculate_keyword_frequencies')
+@patch('google.adk.models.registry.LLMRegistry.new_llm')
+async def test_process_stores_empty_results_if_no_keywords(mock_new_llm, mock_calc_freq, mock_context, sample_collected_data_dict):
+    """3.5.2: LLM이 빈 키워드 리스트를 반환했을 때 빈 결과가 저장되는지 테스트합니다."""
+    # --- Mock LLM ---
+    mock_llm_instance = MagicMock()
+    # Return empty list in JSON format
+    mock_llm_text_response = '```json\n[]\n```'
+    mock_response = MagicMock()
+    mock_response.text = mock_llm_text_response
+    mock_llm_instance.generate_content_async.return_value = async_generator_from_list([mock_response])
+    mock_new_llm.return_value = mock_llm_instance
+
+    # --- Agent setup ---
+    agent = KeywordExtractionAgent()
+    mock_context.state["collected_data"] = sample_collected_data_dict
+
+    # --- Run process ---
+    result = await agent.process(mock_context)
+
+    # --- Assertions ---
+    mock_new_llm.assert_called_once_with(agent.model)
+    mock_llm_instance.generate_content_async.assert_called_once()
+
+    # calculate_keyword_frequencies should NOT be called
+    mock_calc_freq.assert_not_called()
+
+    # Verify state update
+    assert "keyword_results" in mock_context.state
+    assert mock_context.state["keyword_results"] == [] # Expect empty list
+    assert mock_context.state.get("extracted_keywords_raw") is None # Should not be set
+
+    # Verify return message
+    assert "키워드 추출 및 빈도 계산 완료" in result # Message still indicates completion
+    assert "0개 키워드 처리됨" in result
+
+
+@pytest.mark.asyncio
+@patch('theme_news_agent.sub_agents.keyword_extraction.agent.calculate_keyword_frequencies')
+@patch('google.adk.models.registry.LLMRegistry.new_llm')
+async def test_process_stores_empty_results_on_freq_calc_error(mock_new_llm, mock_calc_freq, mock_context, sample_collected_data_dict, caplog):
+    """3.5.3: 빈도 계산 중 예외 발생 시 빈 결과가 저장되는지 테스트합니다."""
+    # --- Mock LLM ---
+    mock_llm_instance = MagicMock()
+    mock_llm_text_response = '```json\n["error_trigger"]\n```'
+    mock_response = MagicMock()
+    mock_response.text = mock_llm_text_response
+    mock_llm_instance.generate_content_async.return_value = async_generator_from_list([mock_response])
+    mock_new_llm.return_value = mock_llm_instance
+
+    # --- Mock calculate_keyword_frequencies to raise an exception ---
+    calc_exception = Exception("Frequency calculation failed!")
+    mock_calc_freq.side_effect = calc_exception
+
+    # --- Agent setup ---
+    agent = KeywordExtractionAgent()
+    mock_context.state["collected_data"] = sample_collected_data_dict
+
+    # --- Run process ---
+    result = await agent.process(mock_context)
+
+    # --- Assertions ---
+    mock_new_llm.assert_called_once_with(agent.model)
+    mock_llm_instance.generate_content_async.assert_called_once()
+
+    # Verify calculate_keyword_frequencies was called
+    extracted_keywords = ["error_trigger"]
+    collected_data_obj = CollectedData(**sample_collected_data_dict)
+    mock_calc_freq.assert_called_once_with(extracted_keywords, collected_data_obj)
+
+    # Verify error log
+    assert "키워드 빈도 계산 중 오류 발생" in caplog.text
+    assert "Frequency calculation failed!" in caplog.text # Check for the specific exception message
+
+    # Verify state update
+    assert "keyword_results" in mock_context.state
+    assert mock_context.state["keyword_results"] == [] # Expect empty list due to error
+    assert mock_context.state.get("extracted_keywords_raw") is None # Should not be set
+
+    # Verify return message (still indicates completion, but mentions the number of keywords processed *before* the error)
+    assert "키워드 추출 및 빈도 계산 완료" in result
+    assert "1개 키워드 처리됨" in result # Reflects keywords extracted before the frequency error 

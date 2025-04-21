@@ -147,13 +147,13 @@
     - [X] `theme_news_agent/sub_agents/keyword_extraction/tools/frequency_calculator.py` (또는 agent.py 내 함수) 생성.
     - [X] 함수 정의: `calculate_keyword_frequencies(keywords: List[str], collected_data: CollectedData) -> List[Dict]`.
     - [X] 로직:
-        - 입력 `keywords` 리스트의 각 키워드에 대해, `collected_data`의 모든 문서(`title` + `content`)에서 등장 횟수 계산 (대소문자 구분 없이).
-        - 출처별 빈도 계산 시, 이제 금융 트렌드, 검색 트렌드 소스도 포함하여 집계.
-        - 결과 형식: `[{ "keyword": "...", "frequency": { "total": N, "news": N, "blogs": N, "cafes": N, "finance": N, "search": N } }, ...]`.
+        - [X] 입력 `keywords` 리스트의 각 키워드에 대해, `collected_data`의 모든 문서(`title` + `content`)에서 등장 횟수 계산 (대소문자 구분 없이).
+        - [X] 출처별 빈도 계산 시, 이제 금융 트렌드, 검색 트렌드 소스도 포함하여 집계.
+        - [X] 결과 형식: `[{ "keyword": "...", "frequency": { "total": N, "news": N, "blogs": N, "cafes": N, "finance": N, "search": N } }, ...]`. # 'other' 카테고리 포함
 
-- [ ] **3.5 상태 관리:**
-    - [ ] `KeywordExtractionAgent.process`에서 빈도 계산 함수 호출.
-    - [ ] 계산된 빈도 정보 포함 결과를 세션 상태에 저장: `ctx.state["keyword_results"] = keyword_frequency_data`.
+- [X] **3.5 상태 관리:** # 완료 표시
+    - [X] `KeywordExtractionAgent.process`에서 빈도 계산 함수 호출. # 완료 표시
+    - [X] 계산된 빈도 정보 포함 결과를 세션 상태에 저장: `ctx.state["keyword_results"] = keyword_frequency_data`. # 완료 표시
 
 ## 4단계: 테마 클러스터링 에이전트 구현
 

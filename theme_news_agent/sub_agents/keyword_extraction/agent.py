@@ -10,6 +10,8 @@ from google.genai import types # 추가
 # 데이터 모델 및 프롬프트 임포트 추가
 from theme_news_agent.sub_agents.data_collection.models import CollectedData, ArticleData
 from .prompt import get_extraction_prompt
+# 빈도 계산 함수 임포트 추가
+from .tools.frequency_calculator import calculate_keyword_frequencies
 
 logger = logging.getLogger(__name__)
 
@@ -154,8 +156,30 @@ class KeywordExtractionAgent(LlmAgent):
             logger.error(f"[{self.name}] {error_msg}")
             extracted_keywords = []
 
-        # 4. ctx.state["extracted_keywords_raw"] 업데이트
-        ctx.state["extracted_keywords_raw"] = extracted_keywords
-        logger.info(f"[{self.name}] 추출된 원본 키워드 ({len(extracted_keywords)}개)를 상태에 저장했습니다.")
+        # 4. ctx.state["extracted_keywords_raw"] 업데이트 (빈도 계산 전 raw 데이터 저장)
+        # 이 부분은 이제 빈도 계산 결과에 포함되므로 제거하거나 주석 처리 가능.
+        # ctx.state["extracted_keywords_raw"] = extracted_keywords 
+        # logger.info(f"[{self.name}] 추출된 원본 키워드 ({len(extracted_keywords)}개)를 상태에 저장했습니다.")
 
-        return f"키워드 추출 완료: {len(extracted_keywords)}개 키워드 추출됨 (파싱 성공 여부 확인 필요)."
+        # --- TODO 3.5 시작 ---
+        # 5. 키워드 빈도 계산
+        if extracted_keywords:
+            logger.info(f"[{self.name}] 추출된 {len(extracted_keywords)}개 키워드에 대한 빈도 계산 시작...")
+            try:
+                # calculate_keyword_frequencies 함수 호출 시 collected_data 객체 전달
+                keyword_frequency_data = calculate_keyword_frequencies(extracted_keywords, collected_data)
+                # 6. ctx.state["keyword_results"] 업데이트
+                ctx.state["keyword_results"] = keyword_frequency_data
+                logger.info(f"[{self.name}] 키워드 빈도 계산 완료 및 결과를 상태(\"keyword_results\")에 저장했습니다.")
+            except Exception as e:
+                logger.exception(f"[{self.name}] 키워드 빈도 계산 중 오류 발생: {e}")
+                # 빈도 계산 실패 시 빈 리스트 저장 또는 오류 상태 명시
+                ctx.state["keyword_results"] = [] 
+        else:
+            # 추출된 키워드가 없는 경우
+            logger.warning(f"[{self.name}] 빈도를 계산할 키워드가 없습니다. 빈 결과를 상태에 저장합니다.")
+            ctx.state["keyword_results"] = []
+        # --- TODO 3.5 끝 ---
+
+        # 반환 메시지 업데이트 (추출된 키워드 수 + 빈도 계산 여부 언급 가능)
+        return f"키워드 추출 및 빈도 계산 완료: {len(extracted_keywords)}개 키워드 처리됨."
