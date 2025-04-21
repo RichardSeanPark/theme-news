@@ -60,8 +60,7 @@
     - [X] `.gitignore` 파일에 `.env` 및 민감 정보 파일 패턴 추가.
 
 - [ ] **1.4 기본 프로젝트 파일:**
-    - [ ] 에이전트 목적, 설정 방법, 실행 방법 등을 포함하는 상세 `theme_news_agent/README.md` 생성.
-    - [ ] `theme_news_agent/.gitignore` 생성 (Python 표준, `.env`, `__pycache__/`, `data/`, `*.log` 등).
+    - [X] 에이전트 목적, 설정 방법, 실행 방법 등을 포함하는 상세 `theme_news_agent/README.md` 생성.
     - [ ] 데이터 저장용 디렉토리 생성 (예: `theme_news_agent/data/`) 및 `.gitignore`에 추가 (필요시).
 
 ## 2단계: 데이터 수집 에이전트 구현

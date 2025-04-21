@@ -227,3 +227,18 @@
     1.  `git check-ignore theme_news_agent/.env` 명령을 실행합니다.
     2.  명령어가 성공적으로 실행되고 해당 경로를 출력하는지 확인합니다.
 *   **예상 결과:** `git check-ignore` 명령이 성공하고 `theme_news_agent/.env`를 출력합니다.
+
+## 4. 기본 프로젝트 파일
+
+### 4.1. README 파일
+
+#### 4.1.1. `theme_news_agent/README.md` 파일 생성 확인
+
+- [X]
+*   **테스트 케이스 ID:** `test_agent_readme_creation`
+*   **우선순위:** 중간
+*   **유형:** 기능 테스트
+*   **설명:** `theme_news_agent/` 디렉토리 내부에 `README.md` 파일이 성공적으로 생성되었는지 확인합니다.
+*   **단계:**
+    1.  `theme_news_agent/` 디렉토리 내부에 `README.md` 파일이 존재하는지 확인합니다.
+*   **예상 결과:** `theme_news_agent/README.md` 파일이 존재합니다.
