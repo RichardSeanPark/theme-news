@@ -430,28 +430,29 @@
 - [X]
 *   **테스트 케이스 ID:** `test_fetch_trending_tickers_success`
 *   **우선순위:** 높음
-*   **유형:** 통합 테스트 (Live Web)
-*   **설명:** `fetch_trending_tickers` 함수가 Yahoo Finance 웹사이트를 성공적으로 스크래핑하여 예외 없이 티커 정보 딕셔너리 리스트를 반환하는지 확인합니다. (주의: 네트워크 연결 및 Yahoo Finance 웹사이트 구조 의존성 있음)
+*   **유형:** 통합 테스트 (Live Web with Playwright)
+*   **설명:** `fetch_trending_tickers` 함수가 Playwright를 사용하여 Yahoo Finance 웹사이트를 성공적으로 스크래핑하고 예외 없이 티커 정보 딕셔너리 리스트를 반환하는지 확인합니다. (주의: 네트워크 연결, Playwright 바이너리 설치, Yahoo Finance 웹사이트 구조 의존성 있음)
 *   **단계:**
-    1.  `fetch_trending_tickers` 함수를 호출합니다.
-    2.  반환값이 리스트(`list`) 타입인지 확인합니다.
-    3.  함수 호출 중 예외가 발생하지 않았는지 확인합니다.
-    4.  (선택적) 리스트가 비어있지 않다면, 첫 번째 항목이 예상된 키(`title`, `content`, `source`, `published`, `url`)를 포함하는지 확인합니다.
+    1.  (필요시) `playwright install` 실행.
+    2.  `fetch_trending_tickers` 함수를 호출합니다.
+    3.  반환값이 리스트(`list`) 타입인지 확인합니다.
+    4.  함수 호출 중 예외가 발생하지 않았는지 확인합니다.
+    5.  (선택적) 리스트가 비어있지 않다면, 첫 번째 항목이 예상된 키(`title`, `content`, `source`, `published`, `url`)를 포함하는지 확인합니다.
 *   **예상 결과:** 예외 없이 티커 정보 딕셔너리 리스트를 반환합니다. (사이트 상태에 따라 빈 리스트일 수 있음)
 
 ### 2.4.2. 스크래핑 실패 시 오류 처리 테스트
 
-- [-]
+- [X] # 모킹으로 구현 및 테스트 완료
 *   **테스트 케이스 ID:** `test_fetch_trending_tickers_scraping_failure`
 *   **우선순위:** 중간
-*   **유형:** 단위 테스트 (모킹 필요)
-*   **설명:** Yahoo Finance 웹사이트 구조 변경 등으로 인해 스크래핑 대상 요소를 찾지 못했을 때, 함수가 빈 리스트를 반환하고 경고/오류 로그를 남기는지 확인합니다. **(주의: 모킹 없이는 안정적인 테스트 자동화가 어려움)**
+*   **유형:** 단위 테스트 (모킹 사용)
+*   **설명:** Yahoo Finance 웹사이트 구조 변경 등으로 인해 스크래핑 대상 요소를 찾지 못했을 때, 함수가 빈 리스트를 반환하고 경고 로그를 남기는지 확인합니다.
 *   **단계:**
-    1.  (모킹 사용 시) `requests.get`이 정상 응답을 반환하지만, `BeautifulSoup.find` 또는 `find_all`이 `None` 또는 빈 리스트를 반환하도록 HTML 내용을 조작하거나 `find`/`find_all` 메서드를 모킹합니다.
+    1.  (모킹 사용 시) `playwright`의 `page.content()`는 정상적인 HTML을 반환하지만, `BeautifulSoup`의 `find` 또는 `find_all` 메서드가 `None` 또는 빈 리스트를 반환하도록 모킹합니다.
     2.  `fetch_trending_tickers` 함수를 호출합니다.
     3.  반환값이 빈 리스트(`[]`)인지 확인합니다.
-    4.  로그 출력에 "Could not find..." 또는 "Failed to find..." 같은 경고/오류 메시지가 포함되어 있는지 확인합니다.
-*   **예상 결과:** 빈 리스트를 반환하고, 적절한 로그 메시지를 출력합니다.
+    4.  로그 출력에 "Could not find..." 또는 "Found trending tickers section, but no ticker links inside..." 같은 경고 메시지가 포함되어 있는지 확인합니다.
+*   **예상 결과:** 빈 리스트를 반환하고, 적절한 경고 로그 메시지를 출력합니다.
 
 ### 2.4.3. 네트워크 오류 시 처리 테스트
 
@@ -459,10 +460,10 @@
 *   **테스트 케이스 ID:** `test_fetch_trending_tickers_network_error`
 *   **우선순위:** 높음
 *   **유형:** 단위 테스트 (모킹 사용)
-*   **설명:** Yahoo Finance 웹사이트 접근 중 네트워크 오류(`requests.exceptions.RequestException`) 발생 시, 함수가 빈 리스트를 반환하고 오류 로그를 남기는지 확인합니다.
+*   **설명:** Playwright로 Yahoo Finance 웹사이트 접근 중 네트워크 오류(`PlaywrightError`) 발생 시, 함수가 빈 리스트를 반환하고 오류 로그를 남기는지 확인합니다.
 *   **단계:**
-    1.  `requests.get` 함수를 모킹하여 `requests.exceptions.RequestException` 예외를 발생시키도록 설정합니다.
+    1.  `playwright.sync_api._generated.Page.goto` 함수를 모킹하여 `PlaywrightError` 예외를 발생시키도록 설정합니다.
     2.  `fetch_trending_tickers` 함수를 호출합니다.
     3.  반환값이 빈 리스트(`[]`)인지 확인합니다.
-    4.  로그 출력에 "Error fetching Yahoo Finance..." 같은 오류 메시지가 포함되어 있는지 확인합니다.
+    4.  로그 출력에 "Playwright error fetching Yahoo Finance..." 같은 오류 메시지가 포함되어 있는지 확인합니다.
 *   **예상 결과:** 빈 리스트를 반환하고, 적절한 오류 로그 메시지를 출력합니다.
