@@ -14,10 +14,10 @@ alwaysApply: false
 3.  **TODO 항목 확인**: [markdown/TODO.md](mdc:markdown/TODO.md) 파일을 참조하여 현재 진행해야 할 **첫 번째 미완료 항목**을 식별합니다. 한 번에 하나의 항목만 처리합니다.
 4.  **코드 구현/수정**: 식별된 TODO 항목의 요구사항에 맞춰 코드를 구현하거나 수정합니다.
 5.  **테스트 가이드 분석**: 코드 구현/수정 완료 후, [markdown/testcase-guide.md](mdc:markdown/testcase-guide.md) 파일을 **아주 자세히 분석**하여 현재 완료된 TODO 항목과 관련된 테스트 케이스 및 절차를 파악합니다.
-6.  **테스트케이스문서 작성**: 분석된 `testcase-guide.md` 내용에 따라 @markdown/testcase.md 파일에 테스트 항목을 추가합니다.
-7. **테스트 코드 작성**: 분석된 `testcase-guide.md` 내용에 따라 @markdown/testcase.md 파일에 맞는 테스트 코드를 작성합니다.
+6.  **테스트케이스문서 작성**: 분석된 `testcase-guide.md` 내용에 따라 @markdown/testcase2.md 파일에 테스트 항목을 추가합니다. @markdown/testcase.md 참조.
+7. **테스트 코드 작성**: 분석된 `testcase-guide.md` 내용에 따라 @markdown/testcase2.md 파일에 맞는 테스트 코드를 작성합니다.
 8. **테스트 수행**: 분석된 `testcase-guide.md` 내용에 따라 테스트 코드를 수행합니다.
-9. **테스트케이스문서 업데이트**: 분석된 `testcase-guide.md` 내용에 따라 @markdown/testcase.md 파일에 테스트를 업데이트 합니다.
+9. **테스트케이스문서 업데이트**: 분석된 `testcase-guide.md` 내용에 따라 @markdown/testcase2.md 파일에 테스트를 업데이트 합니다.
 7.  **TODO 항목 완료 처리**:
     *   `testcase-guide.md`에 따른 테스트가 **성공적으로 완료**된 경우, [markdown/TODO.md](mdc:markdown/TODO.md) 파일에서 해당 항목의 체크박스를 `[X]`로 수정합니다.
     *   `testcase-guide.md`에 따른 테스트 진행이 **불가능**하거나 해당 가이드에 명시된 테스트 기준을 충족할 수 없는 경우, 해당 항목의 체크박스를 `[-]`로 수정하고 그 이유를 명확히 기록합니다.

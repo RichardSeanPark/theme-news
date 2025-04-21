@@ -131,10 +131,10 @@
     - [X] `theme_news_agent/sub_agents/keyword_extraction/agent.py`에 `KeywordExtractionAgent` 클래스 정의 (`google.adk.LlmAgent` 상속).
     - [X] `__init__`에서 `model` (예: 'gemini-1.5-flash-latest'), `description`, `instruction` 설정.
 
-- [ ] **3.2 추출 프롬프트 정의:**
-    - [ ] `theme_news_agent/sub_agents/keyword_extraction/prompt.py`에 프롬프트 문자열 또는 함수 정의 (`get_extraction_prompt`).
-    - [ ] `Design.md` 섹션 4 (1) 및 `Dev_Plan.md` 섹션 5.2 참고하여 프롬프트 작성. LLM에게 입력 텍스트(제목+요약)에서 주요 키워드/엔티티(인물, 조직, 이벤트, 제품, 기술, 주제 명사구 등) 추출 지시.
-    - [ ] 출력 형식을 명확히 지정: **반드시 JSON 형식의 키워드 문자열 리스트로 반환**하도록 요구. 예: `["키워드1", "키워드2", ...]`.
+- [X] **3.2 추출 프롬프트 정의:**
+    - [X] `theme_news_agent/sub_agents/keyword_extraction/prompt.py`에 프롬프트 문자열 또는 함수 정의 (`get_extraction_prompt`).
+    - [X] `Design.md` 섹션 4 (1) 및 `Dev_Plan.md` 섹션 5.2 참고하여 프롬프트 작성. LLM에게 입력 텍스트(제목+요약)에서 주요 키워드/엔티티(인물, 조직, 이벤트, 제품, 기술, 주제 명사구 등) 추출 지시.
+    - [X] 출력 형식을 명확히 지정: **반드시 JSON 형식의 키워드 문자열 리스트로 반환**하도록 요구. 예: `["키워드1", "키워드2", ...]`.
 
 - [ ] **3.3 에이전트 로직 구현:**
     - [ ] `KeywordExtractionAgent.process` 메서드 구현:
