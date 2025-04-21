@@ -32,4 +32,20 @@ def test_specific_sub_agent_directories_exist():
     ]
     for dir_name in sub_agent_dirs:
         path = os.path.join(base_path, dir_name)
-        assert os.path.isdir(path), f"The directory '{path}' should exist." 
+        assert os.path.isdir(path), f"The directory '{path}' should exist."
+
+def test_sub_agent_internal_structure_exists():
+    """Test case 1.1.7: Check if required files/dirs exist inside sub-agent directories."""
+    base_path = "theme_news_agent/theme_news_agent/sub_agents"
+    structure = {
+        "data_collection": [("agent.py", os.path.isfile), ("tools", os.path.isdir)],
+        "keyword_extraction": [("agent.py", os.path.isfile), ("prompt.py", os.path.isfile)],
+        "theme_clustering": [("agent.py", os.path.isfile), ("prompt.py", os.path.isfile)],
+        "trend_analysis": [("agent.py", os.path.isfile), ("tools", os.path.isdir)],
+        "summary_generation": [("agent.py", os.path.isfile), ("prompt.py", os.path.isfile)],
+    }
+
+    for sub_agent, items in structure.items():
+        for item_name, check_func in items:
+            path = os.path.join(base_path, sub_agent, item_name)
+            assert check_func(path), f"The item '{path}' should exist and be of the correct type." 
