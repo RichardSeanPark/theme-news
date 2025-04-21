@@ -14,3 +14,14 @@
 *   **단계:**
     1.  프로젝트 루트에 `theme_news_agent/` 디렉토리가 존재하는지 확인합니다.
 *   **예상 결과:** `theme_news_agent/` 디렉토리가 존재합니다.
+
+#### 1.1.2. 핵심 파이썬 패키지 디렉토리 생성: `theme_news_agent/theme_news_agent/`
+
+- [X]
+*   **테스트 케이스 ID:** `test_package_directory_creation`
+*   **우선순위:** 높음
+*   **유형:** 기능 테스트
+*   **설명:** 핵심 파이썬 패키지 디렉토리 `theme_news_agent/theme_news_agent/`가 `theme_news_agent/` 내부에 성공적으로 생성되었는지 확인합니다.
+*   **단계:**
+    1.  `theme_news_agent/` 디렉토리 내부에 `theme_news_agent/` 디렉토리가 존재하는지 확인합니다.
+*   **예상 결과:** `theme_news_agent/theme_news_agent/` 디렉토리가 존재합니다.

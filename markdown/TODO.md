@@ -5,8 +5,8 @@
 ## 1단계: 프로젝트 설정 및 환경 구성
 
 - [ ] **1.1 프로젝트 디렉토리 구조 생성:**
-    - [-] 메인 에이전트 디렉토리 생성: `theme_news_agent/` (ADK 규칙에 따라 하이픈 사용). # 단순 디렉토리 생성으로 testcase-guide.md 기반 테스트 불가
-    - [ ] 핵심 파이썬 패키지 디렉토리 생성: `theme_news_agent/theme_news_agent/` (밑줄 사용).
+    - [X] 메인 에이전트 디렉토리 생성: `theme_news_agent/` (ADK 규칙에 따라 하이픈 사용). # 단순 디렉토리 생성으로 testcase-guide.md 기반 테스트 불가
+    - [X] 핵심 파이썬 패키지 디렉토리 생성: `theme_news_agent/theme_news_agent/` (밑줄 사용).
     - [ ] `theme_news_agent/theme_news_agent/__init__.py` 생성.
     - [ ] `theme_news_agent/theme_news_agent/agent.py` 생성 (마스터 에이전트용).
     - [ ] `theme_news_agent/theme_news_agent/sub_agents/` 디렉토리 생성.
