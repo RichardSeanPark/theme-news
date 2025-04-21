@@ -112,10 +112,10 @@
     - [X] `Playwright` 사용 함수 구현 (`fetch_dynamic_content`).
     - [X] 오류 처리, `robots.txt` 확인 (선택적), `time.sleep()` 추가.
 
-- [ ] **2.7 데이터 모델 정의 (Pydantic):**
-    - [ ] `theme_news_agent/sub_agents/data_collection/models.py` 생성.
-    - [ ] `ArticleData` Pydantic 모델 정의 (기존과 유사: `title`, `content`, `source`, `published`, `url`). `source` 필드는 이제 "NewsAPI", "NYTimes", "Naver News", "Naver Blog", "Naver Cafe", "Yahoo Finance Trending", "Google Trends", "Naver DataLab" 등을 포함할 수 있음.
-    - [ ] `CollectedData` Pydantic 모델 정의. 필드를 좀 더 일반화하거나 (예: `articles: List[ArticleData]`), 소스별 리스트를 유지할 수 있음 (예: `news: List`, `blogs: List`, ..., `financial_trends: List`, `search_trends: List`). 후자가 후처리 단계에서 소스별 분석에 유리할 수 있음.
+- [X] **2.7 데이터 모델 정의 (Pydantic):**
+    - [X] `theme_news_agent/sub_agents/data_collection/models.py` 생성.
+    - [X] `ArticleData` Pydantic 모델 정의 (기존과 유사: `title`, `content`, `source`, `published`, `url`). `source` 필드는 이제 "NewsAPI", "NYTimes", "Naver News", "Naver Blog", "Naver Cafe", "Yahoo Finance Trending", "Google Trends", "Naver DataLab" 등을 포함할 수 있음.
+    - [X] `CollectedData` Pydantic 모델 정의. 필드를 좀 더 일반화하거나 (예: `articles: List[ArticleData]`), 소스별 리스트를 유지할 수 있음 (예: `news: List`, `blogs: List`, ..., `financial_trends: List`, `search_trends: List`). 후자가 후처리 단계에서 소스별 분석에 유리할 수 있음.
 
 - [ ] **2.8 도구 통합 및 상태 관리:**
     - [ ] `DataCollectionAgent.process` 메서드 구현:

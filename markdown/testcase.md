@@ -549,7 +549,7 @@
 *   **유형:** 단위 테스트 (모킹 사용)
 *   **설명:** `newspaper3k`가 페이지 다운로드 및 파싱은 성공했지만 `article.text` 속성이 비어있는 경우, 함수가 `None`을 반환하고 경고 로그를 남기는지 확인합니다.
 *   **단계:**
-    1.  `newspaper.Article` 객체를 모킹하여 `download`와 `parse`는 성공적으로 호출되지만, `text` 속성이 빈 문자열(`""`)을 반환하도록 설정합니다.
+    1.  `newspaper.Article` 객체를 모킹하여 `download`와 `parse` 메서드는 성공적으로 호출되지만, `text` 속성이 빈 문자열(`""`)을 반환하도록 설정합니다.
     2.  유효한 형식의 URL로 `fetch_full_content` 함수를 호출합니다.
     3.  반환값이 `None`인지 확인합니다.
     4.  로그 출력에 "Could not extract main text content..." 같은 경고 메시지가 포함되어 있는지 확인합니다.
@@ -585,7 +585,7 @@
 
 ### 2.6.6. `fetch_full_content` 요청 간 지연 테스트 (모킹)
 
-- [-] # newspaper3k 내부 동작 모킹 어려움
+- [X]
 *   **테스트 케이스 ID:** `test_fetch_full_content_delay`
 *   **우선순위:** 낮음
 *   **유형:** 단위 테스트 (모킹 사용)
@@ -671,3 +671,20 @@
     4.  함수가 성공적으로 텍스트를 반환하는지 확인합니다.
     5.  모킹된 `time.sleep` 함수가 `web_crawling_tool.DEFAULT_WAIT_TIME` 값으로 한 번 호출되었는지 확인합니다.
 *   **예상 결과:** 함수는 텍스트를 반환하고, `time.sleep`이 정확한 인수로 호출됩니다.
+
+## 2.7 데이터 모델 정의 (Pydantic)
+
+### `ArticleData` 모델
+- [X] **정상 데이터 생성**: 필수 필드(`title`, `source`)와 선택 필드(`content`, `published`, `url`)를 포함한 유효한 데이터로 `ArticleData` 인스턴스를 성공적으로 생성하는지 확인합니다.
+- [X] **필수 필드 누락**: `title` 또는 `source`가 누락된 데이터로 인스턴스 생성 시 `ValidationError` 발생하는지 확인합니다.
+- [X] **URL 유효성 검사**: 유효하지 않은 형식의 `url` 값(예: "htp://invalid") 입력 시 `ValidationError` 발생하는지 확인합니다.
+- [X] **`published` 날짜 파싱 (ISO 8601)**: ISO 8601 형식의 문자열(`"2024-01-01T12:00:00Z"`)이 `datetime` 객체로 올바르게 파싱되는지 확인합니다.
+- [X] **`published` 날짜 파싱 (datetime 객체)**: 이미 `datetime` 객체인 값이 그대로 유지되는지 확인합니다.
+- [X] **`published` 날짜 파싱 (None)**: `None` 값이 그대로 `None`으로 유지되는지 확인합니다.
+- [X] **`published` 날짜 파싱 (잘못된 형식)**: 파싱할 수 없는 문자열(예: "invalid date") 또는 잘못된 타입(예: 123) 입력 시 `None`으로 처리되고 경고 로그가 발생하는지 확인합니다.
+
+### `CollectedData` 모델
+- [X] **기본 인스턴스 생성**: 아무 데이터 없이 `CollectedData()` 호출 시, 모든 필드가 빈 리스트(`[]`)인 인스턴스가 성공적으로 생성되는지 확인합니다.
+- [X] **데이터 추가 및 확인**: 각 소스별 필드(예: `newsapi_articles`)에 `ArticleData` 인스턴스 리스트를 할당하고, 해당 필드에 데이터가 올바르게 저장되는지 확인합니다.
+- [X] **`get_all_articles` 메서드**: 여러 소스에 데이터가 포함된 `CollectedData` 인스턴스에서 `get_all_articles()` 메서드 호출 시, 모든 소스의 `ArticleData`가 포함된 단일 리스트를 올바르게 반환하는지 확인합니다.
+- [X] **`log_summary` 메서드**: `CollectedData` 인스턴스에서 `log_summary()` 메서드 호출 시, 각 소스별 항목 수와 총 항목 수가 포함된 요약 정보가 INFO 레벨로 로깅되는지 확인합니다 (로그 캡처 필요).
