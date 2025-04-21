@@ -8,7 +8,7 @@
     - [X] 메인 에이전트 디렉토리 생성: `theme_news_agent/` (ADK 규칙에 따라 하이픈 사용). # 단순 디렉토리 생성으로 testcase-guide.md 기반 테스트 불가
     - [X] 핵심 파이썬 패키지 디렉토리 생성: `theme_news_agent/theme_news_agent/` (밑줄 사용).
     - [X] `theme_news_agent/theme_news_agent/__init__.py` 생성.
-    - [ ] `theme_news_agent/theme_news_agent/agent.py` 생성 (마스터 에이전트용).
+    - [X] `theme_news_agent/theme_news_agent/agent.py` 생성 (마스터 에이전트용).
     - [ ] `theme_news_agent/theme_news_agent/sub_agents/` 디렉토리 생성.
     - [ ] `sub_agents/` 내부에 계획된 각 에이전트용 하위 디렉토리 생성:
         - `data_collection/`
