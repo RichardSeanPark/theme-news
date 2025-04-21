@@ -90,12 +90,12 @@
     - [X] 결과를 `ArticleData` 표준 형식으로 파싱. `content`는 API의 `description` 사용. `published`는 `postdate` 또는 `description`에서 추출 시도. `source`는 "Naver Blog", "Naver Cafe" 등으로 구분.
     - [X] API 오류 처리 구현.
 
-- [ ] **2.4 금융 트렌드 도구 구현 (`FinancialTrendTool` - 신규):**
-    - [ ] `theme_news_agent/sub_agents/data_collection/tools/financial_trend_tool.py` 생성.
-    - [ ] `@Tool` 데코레이터 적용 함수 정의: `fetch_trending_tickers()`.
-    - [ ] 웹 스크래핑 (`requests` + `BeautifulSoup4`) 또는 비공식 API를 사용하여 금융 정보 사이트(예: Yahoo Finance 'Trending Tickers')에서 현재 인기/거래량 급증 주식 티커 목록 가져오기 로직 구현.
-    - [ ] 스크래핑 시 HTML 구조 변경에 대비한 견고한 파싱 로직 및 오류 처리 구현.
-    - [ ] 파싱 결과(티커 심볼, 회사명 등)를 `ArticleData`와 유사한 표준 형식으로 변환 (예: `title`=회사명, `content`=티커 심볼, `source`="Yahoo Finance Trending", `published`=수집 시각).
+- [X] **2.4 금융 트렌드 도구 구현 (`FinancialTrendTool` - 신규):**
+    - [X] `theme_news_agent/sub_agents/data_collection/tools/financial_trend_tool.py` 생성.
+    - [X] `@Tool` 데코레이터 적용 함수 정의: `fetch_trending_tickers()`.
+    - [X] 웹 스크래핑 (`requests` + `playwright`) 또는 비공식 API를 사용하여 금융 정보 사이트(예: Yahoo Finance 'Trending Tickers')에서 현재 인기/거래량 급증 주식 티커 목록 가져오기 로직 구현.
+    - [X] 스크래핑 시 HTML 구조 변경에 대비한 견고한 파싱 로직 및 오류 처리 구현.
+    - [X] 파싱 결과(티커 심볼, 회사명 등)를 `ArticleData`와 유사한 표준 형식으로 변환 (예: `title`=회사명, `content`=티커 심볼, `source`="Yahoo Finance Trending", `published`=수집 시각).
 
 - [ ] **2.5 검색 트렌드 도구 구현 (`SearchTrendTool` - 신규):**
     - [ ] `theme_news_agent/sub_agents/data_collection/tools/search_trend_tool.py` 생성.
