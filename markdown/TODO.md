@@ -80,15 +80,15 @@
     - [X] 각 API 응답(JSON)을 표준 Pydantic 모델 (`ArticleData`) 또는 딕셔너리 리스트로 파싱. `published` 필드는 일관된 형식(ISO 8601 권장)으로 변환.
     - [X] API 호출 시 `requests` 라이브러리 사용 및 타임아웃 설정, 응답 상태 코드 확인 등 기본 오류 처리 구현.
 
-- [ ] **2.3 블로그/카페 검색 API 도구 구현 (`BlogCafeApiTool`):**
-    - [ ] `theme_news_agent/sub_agents/data_collection/tools/blog_cafe_api_tool.py` 생성.
-    - [ ] `@Tool` 데코레이터를 사용하여 함수 정의 (`fetch_naver_blogs`, `fetch_naver_cafe_articles`).
-    - [ ] 각 함수에서 해당 API 호출 로직 구현:
+- [X] **2.3 블로그/카페 검색 API 도구 구현 (`BlogCafeApiTool`):**
+    - [X] `theme_news_agent/sub_agents/data_collection/tools/blog_cafe_api_tool.py` 생성.
+    - [X] `@Tool` 데코레이터를 사용하여 함수 정의 (`fetch_naver_blogs`, `fetch_naver_cafe_articles`).
+    - [X] 각 함수에서 해당 API 호출 로직 구현:
         - Naver Blog API: `https://openapi.naver.com/v1/search/blog.json`. `query` (예: "오늘", "방법", "후기", "최신" 등 **다양한 일반 키워드 또는 이전 트렌드 기반 키워드를 순환/조합하여 사용**), `display=100`, `sort=date`.
         - Naver Cafe API: `https://openapi.naver.com/v1/search/cafearticle.json`. 상동.
-    - [ ] 환경 변수에서 Naver Client ID/Secret 로드.
-    - [ ] 결과를 `ArticleData` 표준 형식으로 파싱. `content`는 API의 `description` 사용. `published`는 `postdate` 또는 `description`에서 추출 시도. `source`는 "Naver Blog", "Naver Cafe" 등으로 구분.
-    - [ ] API 오류 처리 구현.
+    - [X] 환경 변수에서 Naver Client ID/Secret 로드.
+    - [X] 결과를 `ArticleData` 표준 형식으로 파싱. `content`는 API의 `description` 사용. `published`는 `postdate` 또는 `description`에서 추출 시도. `source`는 "Naver Blog", "Naver Cafe" 등으로 구분.
+    - [X] API 오류 처리 구현.
 
 - [ ] **2.4 금융 트렌드 도구 구현 (`FinancialTrendTool` - 신규):**
     - [ ] `theme_news_agent/sub_agents/data_collection/tools/financial_trend_tool.py` 생성.
