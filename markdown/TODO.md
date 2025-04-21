@@ -37,7 +37,7 @@
         - `pydantic` # (데이터 유효성 검사 및 모델링용)
         - `python-dotenv` # (.env 로딩용)
     - [X] `poetry add pytest --group dev` # 테스트용 의존성 추가
-    - [ ] `poetry install --with dev` 실행하여 모든 의존성 설치 및 `poetry.lock` 생성.
+    - [X] `poetry install --with dev` 실행하여 모든 의존성 설치 및 `poetry.lock` 생성.
 
 - [ ] **1.3 환경 변수 구성:**
     - [ ] ADK 퀵스타트 및 `Dev_Plan.md` 요구사항 기반으로 `theme_news_agent/.env.example` 생성. 다음 플레이스홀더 포함:

@@ -176,3 +176,14 @@
     1.  `theme_news_agent/pyproject.toml` 파일을 로드합니다.
     2.  `[tool.poetry.group.dev.dependencies]` 섹션에 `pytest`가 존재하는지 확인합니다.
 *   **예상 결과:** `pytest` 의존성이 `pyproject.toml` 파일의 개발 그룹에 명시되어 있습니다.
+
+#### 2.1.4. `poetry.lock` 파일 생성 확인
+
+- [X]
+*   **테스트 케이스 ID:** `test_poetry_lock_creation`
+*   **우선순위:** 높음
+*   **유형:** 기능 테스트
+*   **설명:** `poetry install` 실행 후 `theme_news_agent/` 디렉토리 내부에 `poetry.lock` 파일이 성공적으로 생성/업데이트되었는지 확인합니다.
+*   **단계:**
+    1.  `theme_news_agent/` 디렉토리 내부에 `poetry.lock` 파일이 존재하는지 확인합니다.
+*   **예상 결과:** `theme_news_agent/poetry.lock` 파일이 존재합니다.

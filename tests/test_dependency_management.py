@@ -58,4 +58,8 @@ def test_pytest_dev_dependency_exists():
     except toml.TomlDecodeError:
         assert False, f"Failed to parse TOML file: {file_path}"
     except Exception as e:
-        assert False, f"An error occurred: {e}" 
+        assert False, f"An error occurred: {e}"
+
+def test_poetry_lock_exists():
+    """Test case 2.1.4: Check if poetry.lock exists in theme_news_agent/."""
+    assert os.path.isfile("theme_news_agent/poetry.lock"), "The file 'theme_news_agent/poetry.lock' should exist." 
