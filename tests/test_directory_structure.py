@@ -67,4 +67,8 @@ def test_sub_agent_init_files_exist():
     ]
     for dir_name in sub_agent_dirs:
         init_path = os.path.join(base_path, dir_name, "__init__.py")
-        assert os.path.isfile(init_path), f"The file '{init_path}' should exist." 
+        assert os.path.isfile(init_path), f"The file '{init_path}' should exist."
+
+def test_deployment_directory_exists():
+    """Test case 1.1.9: Check if the deployment directory exists."""
+    assert os.path.isdir("theme_news_agent/deployment"), "The directory 'theme_news_agent/deployment/' should exist." 

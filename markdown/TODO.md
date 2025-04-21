@@ -18,7 +18,7 @@
         - [X] `summary_generation/`
     - [X] 각 하위 에이전트 디렉토리 내부에 `agent.py`, `prompt.py` (LLM 에이전트용), `tools/` (도구 사용 에이전트용) 생성.
     - [X] `sub_agents/` 및 각 하위 에이전트 디렉토리에 `__init__.py` 파일 생성.
-    - [ ] `theme_news_agent/deployment/` 디렉토리 생성.
+    - [X] `theme_news_agent/deployment/` 디렉토리 생성.
     - [ ] `theme_news_agent/eval/` 디렉토리 생성.
     - [ ] `theme_news_agent/tests/` 디렉토리 생성.
 
@@ -199,6 +199,7 @@
     - [ ] **과거 데이터 업데이트:**
         - 현재 테마 언급량을 과거 데이터의 `mentions_history`에 추가.
         - 업데이트된 `mentions_history로 새로운 `avg`, `std` 계산 및 저장.
+        - 변경된 과거 데이터를 파일에 다시 저장.
         - 변경된 과거 데이터를 파일에 다시 저장.
     - [ ] Z-점수가 추가된 테마 리스트 반환.
 
