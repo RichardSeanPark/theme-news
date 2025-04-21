@@ -127,9 +127,9 @@
 
 ## 3단계: 키워드 추출 에이전트 구현
 
-- [ ] **3.1 `KeywordExtractionAgent` 정의:**
-    - [ ] `theme_news_agent/sub_agents/keyword_extraction/agent.py`에 `KeywordExtractionAgent` 클래스 정의 (`google.adk.LlmAgent` 상속).
-    - [ ] `__init__`에서 `model` (예: 'gemini-1.5-flash-latest'), `description`, `instruction` 설정.
+- [X] **3.1 `KeywordExtractionAgent` 정의:**
+    - [X] `theme_news_agent/sub_agents/keyword_extraction/agent.py`에 `KeywordExtractionAgent` 클래스 정의 (`google.adk.LlmAgent` 상속).
+    - [X] `__init__`에서 `model` (예: 'gemini-1.5-flash-latest'), `description`, `instruction` 설정.
 
 - [ ] **3.2 추출 프롬프트 정의:**
     - [ ] `theme_news_agent/sub_agents/keyword_extraction/prompt.py`에 프롬프트 문자열 또는 함수 정의 (`get_extraction_prompt`).

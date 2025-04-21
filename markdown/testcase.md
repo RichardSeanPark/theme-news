@@ -750,3 +750,34 @@
 *   **예상 결과:**
     - `WebCrawlingTool.fetch_full_content`가 호출됩니다.
     - `ctx.state["collected_data"]` 내 해당 항목의 `content`가 업데이트됩니다.
+
+## 3.1 `KeywordExtractionAgent` 정의
+
+### 3.1.1. `KeywordExtractionAgent` 클래스 초기화 테스트
+
+- [X]
+*   **테스트 케이스 ID:** `test_keyword_extraction_agent_initialization`
+*   **우선순위:** 높음
+*   **유형:** 단위 테스트
+*   **설명:** `KeywordExtractionAgent` 클래스가 기본 인자 (name, description, model, instruction)로 정상적으로 초기화되는지 확인합니다.
+*   **단계:**
+    1.  `KeywordExtractionAgent` 클래스를 임포트합니다.
+    2.  기본 인자로 객체를 생성합니다.
+    3.  객체 생성이 성공하는지 확인합니다 (예외 발생하지 않음).
+*   **예상 결과:** `KeywordExtractionAgent` 객체가 성공적으로 생성됩니다.
+
+### 3.1.2. `KeywordExtractionAgent` 속성 검증 테스트
+
+- [X]
+*   **테스트 케이스 ID:** `test_keyword_extraction_agent_attributes`
+*   **우선순위:** 높음
+*   **유형:** 단위 테스트
+*   **설명:** `KeywordExtractionAgent` 객체 생성 시 `name`, `description`, `model`, `instruction` 속성이 올바른 값으로 설정되었는지 확인합니다.
+*   **단계:**
+    1.  `KeywordExtractionAgent` 클래스를 임포트합니다.
+    2.  기본 인자로 객체를 생성합니다.
+    3.  생성된 객체의 `name` 속성이 "KeywordExtractor"인지 확인합니다.
+    4.  생성된 객체의 `description` 속성이 "텍스트에서 주요 키워드를 추출하는 에이전트"인지 확인합니다.
+    5.  생성된 객체의 `model` 속성이 "gemma-3-27b-it"인지 확인합니다.
+    6.  생성된 객체의 `instruction` 속성이 설정된 기본 지침 문자열과 일치하는지 확인합니다.
+*   **예상 결과:** 모든 속성이 예상된 값과 일치합니다.
