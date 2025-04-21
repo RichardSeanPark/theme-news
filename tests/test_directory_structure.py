@@ -79,4 +79,8 @@ def test_eval_directory_exists():
 
 def test_tests_directory_exists():
     """Test case 1.1.11: Check if the tests directory exists inside theme_news_agent."""
-    assert os.path.isdir("theme_news_agent/tests"), "The directory 'theme_news_agent/tests/' should exist." 
+    assert os.path.isdir("theme_news_agent/tests"), "The directory 'theme_news_agent/tests/' should exist."
+
+def test_data_directory_exists():
+    """Test case 4.2.1: Check if the data directory exists inside theme_news_agent."""
+    assert os.path.isdir("theme_news_agent/data"), "The directory 'theme_news_agent/data/' should exist." 

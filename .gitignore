@@ -12,6 +12,7 @@ Thumbs.db
 
 # Data files (if specified in TODO 1.4)
 # data/
+theme_news_agent/data/
 
 # Log files
 *.log 

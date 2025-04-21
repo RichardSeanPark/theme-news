@@ -242,3 +242,28 @@
 *   **단계:**
     1.  `theme_news_agent/` 디렉토리 내부에 `README.md` 파일이 존재하는지 확인합니다.
 *   **예상 결과:** `theme_news_agent/README.md` 파일이 존재합니다.
+
+### 4.2. 데이터 디렉토리
+
+#### 4.2.1. `theme_news_agent/data/` 디렉토리 생성 확인
+
+- [X]
+*   **테스트 케이스 ID:** `test_agent_data_directory_creation`
+*   **우선순위:** 중간
+*   **유형:** 기능 테스트
+*   **설명:** `theme_news_agent/` 디렉토리 내부에 `data/` 디렉토리가 성공적으로 생성되었는지 확인합니다.
+*   **단계:**
+    1.  `theme_news_agent/` 디렉토리 내부에 `data/` 디렉토리가 존재하는지 확인합니다.
+*   **예상 결과:** `theme_news_agent/data/` 디렉토리가 존재합니다.
+
+#### 4.2.2. `.gitignore`에 `data/` 추가 확인
+
+- [X]
+*   **테스트 케이스 ID:** `test_data_dir_ignored`
+*   **우선순위:** 중간
+*   **유형:** 기능 테스트
+*   **설명:** `.gitignore` 파일에 `theme_news_agent/data/` 경로가 포함되어 Git 추적에서 제외되는지 확인합니다.
+*   **단계:**
+    1.  `git check-ignore theme_news_agent/data/` 명령을 실행합니다.
+    2.  명령어가 성공적으로 실행되고 해당 경로를 출력하는지 확인합니다.
+*   **예상 결과:** `git check-ignore` 명령이 성공하고 `theme_news_agent/data/`를 출력합니다.
