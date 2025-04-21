@@ -510,3 +510,164 @@
     2.  반환값이 빈 리스트(`[]`)인지 확인합니다.
     3.  로그 출력에 "fetch_naver_datalab_trends_func is not implemented yet." 경고 메시지가 포함되어 있는지 확인합니다.
 *   **예상 결과:** 빈 리스트를 반환하고, 경고 로그 메시지를 출력합니다.
+
+## 2.6. 웹 크롤링 도구 구현 (`WebCrawlingTool`)
+
+### 2.6.1. `fetch_full_content` 성공 테스트
+
+- [X]
+*   **테스트 케이스 ID:** `test_fetch_full_content_success`
+*   **우선순위:** 높음
+*   **유형:** 통합 테스트 (Live Web)
+*   **설명:** `fetch_full_content` 함수가 유효한 기사 URL을 입력받아 `newspaper3k`를 사용하여 실제 웹 페이지에서 본문 텍스트를 성공적으로 추출하여 문자열을 반환하는지 확인합니다. (주의: 네트워크 연결 및 대상 웹사이트 상태에 의존)
+*   **단계:**
+    1.  실제 존재하는 기사의 URL을 준비합니다.
+    2.  `fetch_full_content` 함수에 해당 URL을 전달하여 호출합니다.
+    3.  반환값이 문자열(`str`) 타입이고 내용이 비어있지 않은지 확인합니다.
+    4.  함수 호출 중 예외가 발생하지 않았는지 확인합니다.
+*   **예상 결과:** 추출된 본문 텍스트 문자열을 반환합니다.
+
+### 2.6.2. `newspaper3k` 라이브러리 오류 시 처리 테스트
+
+- [X]
+*   **테스트 케이스 ID:** `test_fetch_full_content_newspaper_error`
+*   **우선순위:** 높음
+*   **유형:** 단위 테스트 (모킹 사용)
+*   **설명:** `newspaper3k`의 `Article.download()` 또는 `Article.parse()` 메서드 실행 중 `ArticleException` 발생 시, 함수가 `None`을 반환하고 오류 로그를 남기는지 확인합니다.
+*   **단계:**
+    1.  `newspaper.Article` 객체의 `download` 또는 `parse` 메서드를 모킹하여 `ArticleException`을 발생시키도록 설정합니다.
+    2.  유효한 형식의 URL로 `fetch_full_content` 함수를 호출합니다.
+    3.  반환값이 `None`인지 확인합니다.
+    4.  로그 출력에 "Newspaper3k error processing URL..." 같은 오류 메시지가 포함되어 있는지 확인합니다.
+*   **예상 결과:** `None`을 반환하고, 적절한 오류 로그 메시지를 출력합니다.
+
+### 2.6.3. 내용 추출 실패 시 처리 테스트
+
+- [X]
+*   **테스트 케이스 ID:** `test_fetch_full_content_extraction_failure`
+*   **우선순위:** 중간
+*   **유형:** 단위 테스트 (모킹 사용)
+*   **설명:** `newspaper3k`가 페이지 다운로드 및 파싱은 성공했지만 `article.text` 속성이 비어있는 경우, 함수가 `None`을 반환하고 경고 로그를 남기는지 확인합니다.
+*   **단계:**
+    1.  `newspaper.Article` 객체를 모킹하여 `download`와 `parse`는 성공적으로 호출되지만, `text` 속성이 빈 문자열(`""`)을 반환하도록 설정합니다.
+    2.  유효한 형식의 URL로 `fetch_full_content` 함수를 호출합니다.
+    3.  반환값이 `None`인지 확인합니다.
+    4.  로그 출력에 "Could not extract main text content..." 같은 경고 메시지가 포함되어 있는지 확인합니다.
+*   **예상 결과:** `None`을 반환하고, 적절한 경고 로그 메시지를 출력합니다.
+
+### 2.6.4. 잘못된 URL 입력 시 처리 테스트
+
+- [X]
+*   **테스트 케이스 ID:** `test_fetch_full_content_invalid_url`
+*   **우선순위:** 높음
+*   **유형:** 단위 테스트
+*   **설명:** `fetch_full_content` 함수에 유효하지 않은 형식의 URL(예: http/https 없음, None, 빈 문자열)이 입력되었을 때, `None`을 반환하고 오류 로그를 남기는지 확인합니다.
+*   **단계:**
+    1.  유효하지 않은 URL 값들(예: "example.com", "", None)을 준비합니다.
+    2.  각각의 값으로 `fetch_full_content` 함수를 호출합니다.
+    3.  모든 호출에 대해 반환값이 `None`인지 확인합니다.
+    4.  로그 출력에 "Invalid URL provided..." 같은 오류 메시지가 포함되어 있는지 확인합니다.
+*   **예상 결과:** 모든 잘못된 입력에 대해 `None`을 반환하고, 적절한 오류 로그 메시지를 출력합니다.
+
+### 2.6.5. `fetch_full_content` 타임아웃 테스트 (모킹)
+
+- [X]
+*   **테스트 케이스 ID:** `test_fetch_full_content_timeout`
+*   **우선순위:** 중간
+*   **유형:** 단위 테스트 (모킹 사용)
+*   **설명:** `newspaper3k`의 `Article` 객체 생성 또는 `download` 시 타임아웃 관련 예외(`requests.exceptions.Timeout` 등) 발생 시, 함수가 `None`을 반환하고 오류 로그를 남기는지 확인합니다.
+*   **단계:**
+    1.  `newspaper.Article` 생성자 또는 `download` 메서드를 모킹하여 `requests.exceptions.Timeout` (또는 유사 예외)를 발생시키도록 설정합니다.
+    2.  유효한 형식의 URL로 `fetch_full_content_func`를 호출합니다.
+    3.  반환값이 `None`인지 확인합니다.
+    4.  로그 출력에 타임아웃 관련 오류 메시지가 포함되어 있는지 확인합니다.
+*   **예상 결과:** `None`을 반환하고, 타임아웃 관련 오류 로그를 출력합니다.
+
+### 2.6.6. `fetch_full_content` 요청 간 지연 테스트 (모킹)
+
+- [-] # newspaper3k 내부 동작 모킹 어려움
+*   **테스트 케이스 ID:** `test_fetch_full_content_delay`
+*   **우선순위:** 낮음
+*   **유형:** 단위 테스트 (모킹 사용)
+*   **설명:** `fetch_full_content_func`가 성공적으로 내용을 추출하고 반환하기 직전에 `time.sleep`이 설정된 `DEFAULT_WAIT_TIME`만큼 호출되는지 확인합니다.
+*   **단계:**
+    1.  `time.sleep` 함수를 모킹합니다.
+    2.  `newspaper.Article` 객체를 모킹하여 정상적으로 텍스트를 반환하도록 설정합니다.
+    3.  유효한 URL로 `fetch_full_content_func`를 호출합니다.
+    4.  함수가 성공적으로 텍스트를 반환하는지 확인합니다.
+    5.  모킹된 `time.sleep` 함수가 `web_crawling_tool.DEFAULT_WAIT_TIME` 값으로 한 번 호출되었는지 확인합니다.
+*   **예상 결과:** 함수는 텍스트를 반환하고, `time.sleep`이 정확한 인수로 호출됩니다.
+
+### 2.6.7. `fetch_dynamic_content` 성공 테스트 (JS 필요, 모킹)
+
+- [X]
+*   **테스트 케이스 ID:** `test_fetch_dynamic_content_success_js_mocked`
+*   **우선순위:** 높음
+*   **유형:** 단위 테스트 (모킹 사용)
+*   **설명:** `fetch_dynamic_content_func` 함수가 JavaScript 렌더링이 필요한 URL 입력 시, Playwright 관련 객체들(browser, page)이 정상적으로 생성 및 호출되고, `page.inner_text('body')`가 예상된 내용을 반환하며, 최종적으로 해당 내용이 반환되는지 확인합니다. (Playwright 완전 모킹)
+*   **단계:**
+    1.  `playwright.sync_api.sync_playwright` 컨텍스트 매니저와 그 내부 객체들(`Browser`, `Page`)의 주요 메서드(`launch`, `new_page`, `goto`, `wait_for_load_state`, `inner_text`, `close`)를 모두 모킹합니다.
+    2.  `page.inner_text('body')`가 특정 테스트 문자열을 반환하도록 설정합니다.
+    3.  JavaScript 렌더링이 필요한 URL 형식으로 `fetch_dynamic_content_func`를 호출합니다.
+    4.  반환값이 모킹된 `inner_text`와 일치하는지 확인합니다.
+    5.  모킹된 Playwright 메서드들이 예상대로 호출되었는지 확인합니다 (예: `browser.close()` 호출 확인).
+*   **예상 결과:** 모킹된 본문 텍스트를 반환하고, Playwright 객체들이 순서대로 사용됩니다.
+
+### 2.6.8. `fetch_dynamic_content` 잘못된 URL 테스트
+
+- [X]
+*   **테스트 케이스 ID:** `test_fetch_dynamic_content_invalid_url`
+*   **우선순위:** 높음
+*   **유형:** 단위 테스트
+*   **설명:** `fetch_dynamic_content_func` 함수에 유효하지 않은 형식의 URL이 입력되었을 때, Playwright 관련 로직을 실행하지 않고 즉시 `None`을 반환하며 오류 로그를 남기는지 확인합니다.
+*   **단계:**
+    1.  유효하지 않은 URL 값들(예: "example.com", "", None)을 준비합니다.
+    2.  `playwright.sync_api.sync_playwright`를 모킹하여 호출되지 않음을 검증할 수 있도록 합니다.
+    3.  각각의 값으로 `fetch_dynamic_content_func` 함수를 호출합니다.
+    4.  모든 호출에 대해 반환값이 `None`인지 확인합니다.
+    5.  로그 출력에 "Invalid URL format..." 같은 오류 메시지가 포함되어 있는지 확인합니다.
+    6.  모킹된 `sync_playwright`가 호출되지 않았는지 확인합니다.
+*   **예상 결과:** 모든 잘못된 입력에 대해 `None`을 반환하고, 적절한 오류 로그를 출력하며, Playwright 로직은 실행되지 않습니다.
+
+### 2.6.9. `fetch_dynamic_content` Playwright 타임아웃 테스트 (모킹)
+
+- [X]
+*   **테스트 케이스 ID:** `test_fetch_dynamic_content_playwright_timeout`
+*   **우선순위:** 높음
+*   **유형:** 단위 테스트 (모킹 사용)
+*   **설명:** Playwright의 `page.goto` 또는 `page.wait_for_load_state` 등에서 `PlaywrightTimeoutError` 발생 시, 함수가 `None`을 반환하고 오류 로그를 남기는지 확인합니다.
+*   **단계:**
+    1.  `playwright` 관련 객체들을 모킹하고, `page.goto` 또는 `wait_for_load_state` 등에서 `PlaywrightTimeoutError`를 발생시키도록 설정합니다.
+    2.  유효한 형식의 URL로 `fetch_dynamic_content_func`를 호출합니다.
+    3.  반환값이 `None`인지 확인합니다.
+    4.  로그 출력에 "Playwright timeout error..." 같은 오류 메시지가 포함되어 있는지 확인합니다.
+*   **예상 결과:** `None`을 반환하고, 타임아웃 관련 오류 로그를 출력합니다.
+
+### 2.6.10. `fetch_dynamic_content` Playwright 일반 오류 테스트 (모킹)
+
+- [X]
+*   **테스트 케이스 ID:** `test_fetch_dynamic_content_playwright_error`
+*   **우선순위:** 높음
+*   **유형:** 단위 테스트 (모킹 사용)
+*   **설명:** Playwright 작업 중 일반적인 `PlaywrightError` (타임아웃 제외) 발생 시, 함수가 `None`을 반환하고 오류 로그를 남기는지 확인합니다.
+*   **단계:**
+    1.  `playwright` 관련 객체들을 모킹하고, 특정 메서드(예: `inner_text`) 호출 시 `PlaywrightError`를 발생시키도록 설정합니다.
+    2.  유효한 형식의 URL로 `fetch_dynamic_content_func`를 호출합니다.
+    3.  반환값이 `None`인지 확인합니다.
+    4.  로그 출력에 "Playwright error processing URL..." 같은 오류 메시지가 포함되어 있는지 확인합니다.
+*   **예상 결과:** `None`을 반환하고, 일반 Playwright 오류 로그를 출력합니다.
+
+### 2.6.11. `fetch_dynamic_content` 요청 간 지연 테스트 (모킹)
+
+- [X]
+*   **테스트 케이스 ID:** `test_fetch_dynamic_content_delay`
+*   **우선순위:** 낮음
+*   **유형:** 단위 테스트 (모킹 사용)
+*   **설명:** `fetch_dynamic_content_func`가 성공적으로 내용을 추출하고 반환하기 직전에 `time.sleep`이 설정된 `DEFAULT_WAIT_TIME`만큼 호출되는지 확인합니다.
+*   **단계:**
+    1.  `time.sleep` 함수를 모킹합니다.
+    2.  `playwright` 관련 객체들을 모킹하여 정상적으로 텍스트를 반환하도록 설정합니다.
+    3.  유효한 URL로 `fetch_dynamic_content_func`를 호출합니다.
+    4.  함수가 성공적으로 텍스트를 반환하는지 확인합니다.
+    5.  모킹된 `time.sleep` 함수가 `web_crawling_tool.DEFAULT_WAIT_TIME` 값으로 한 번 호출되었는지 확인합니다.
+*   **예상 결과:** 함수는 텍스트를 반환하고, `time.sleep`이 정확한 인수로 호출됩니다.

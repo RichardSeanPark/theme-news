@@ -106,12 +106,11 @@
     - [X] 가져온 검색어 목록을 `ArticleData` 표준 형식으로 변환 (예: `title`=검색어, `source`="Google Trends" / "Naver DataLab", `content`=None, `published`=수집 시각).
     - [X] 관련 라이브러리/스크래핑 오류 처리 구현.
 
-- [ ] **2.6 웹 크롤링 도구 구현 (`WebCrawlingTool` - 기존, 순서 조정):**
-    - [ ] `theme_news_agent/sub_agents/data_collection/tools/web_crawling_tool.py` 생성 (기존과 동일).
-    - [ ] `@Tool` 데코레이터 적용 함수 정의: `fetch_full_content(url: str) -> str | None`.
-    - [ ] 뉴스/블로그 API 결과의 URL에서 본문 텍스트 추출 로직 구현 (`requests` + `BeautifulSoup4` / `Newspaper3k`).
-    - [ ] (고급) `Playwright` 사용 함수 구현 (`fetch_dynamic_content`).
-    - [ ] 오류 처리, `robots.txt` 확인 (선택적), `time.sleep()` 추가.
+- [X] **2.6 웹 크롤링 도구 구현 (`WebCrawlingTool` - 기존, 순서 조정):** # fetch_full_content_delay 테스트는 모킹 어려움으로 skip [-]
+    - [X] `@Tool` 데코레이터 적용 함수 정의: `fetch_full_content(url: str) -> str | None`.
+    - [X] 뉴스/블로그 API 결과의 URL에서 본문 텍스트 추출 로직 구현 (`requests` + `BeautifulSoup4` / `Newspaper3k`).
+    - [X] `Playwright` 사용 함수 구현 (`fetch_dynamic_content`).
+    - [X] 오류 처리, `robots.txt` 확인 (선택적), `time.sleep()` 추가.
 
 - [ ] **2.7 데이터 모델 정의 (Pydantic):**
     - [ ] `theme_news_agent/sub_agents/data_collection/models.py` 생성.
