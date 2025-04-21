@@ -39,7 +39,7 @@
     - [X] `poetry add pytest --group dev` # 테스트용 의존성 추가
     - [X] `poetry install --with dev` 실행하여 모든 의존성 설치 및 `poetry.lock` 생성.
 
-- [ ] **1.3 환경 변수 구성:**
+- [X] **1.3 환경 변수 구성:**
     - [X] ADK 퀵스타트 및 `Dev_Plan.md` 요구사항 기반으로 `theme_news_agent/.env.example` 생성. 다음 플레이스홀더 포함:
         - `# Gemini API Configuration`
         - `GOOGLE_API_KEY=` # (AI Studio Key)
@@ -56,7 +56,7 @@
         - `DATA_FETCH_PERIOD_HOURS=24` # 데이터 수집 기간 (시간 단위)
         - `TREND_TOP_N=20` # 트렌드 분석 상위 N개
         - `HISTORICAL_DATA_PATH="data/historical_themes.json"` # 과거 데이터 저장 경로
-    - [ ] `.env.example`을 복사하여 `theme_news_agent/.env` 생성.
+    - [X] `.env.example`을 복사하여 `theme_news_agent/.env` 생성.
     - [ ] 실제 API 키 및 필요한 구성 값으로 `theme_news_agent/.env` 채우기. **(`.env` 파일은 커밋하지 않음)**
     - [ ] `.gitignore` 파일에 `.env` 및 민감 정보 파일 패턴 추가.
 

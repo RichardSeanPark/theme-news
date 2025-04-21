@@ -66,4 +66,8 @@ def test_poetry_lock_exists():
 
 def test_env_example_exists():
     """Test case 3.1.1: Check if .env.example exists in theme_news_agent/."""
-    assert os.path.isfile("theme_news_agent/.env.example"), "The file 'theme_news_agent/.env.example' should exist." 
+    assert os.path.isfile("theme_news_agent/.env.example"), "The file 'theme_news_agent/.env.example' should exist."
+
+def test_env_exists():
+    """Test case 3.1.2: Check if .env exists in theme_news_agent/."""
+    assert os.path.isfile("theme_news_agent/.env"), "The file 'theme_news_agent/.env' should exist." 
