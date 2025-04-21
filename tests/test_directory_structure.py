@@ -14,4 +14,8 @@ def test_init_file_exists():
 
 def test_agent_file_exists():
     """Test case 1.1.4: Check if the agent.py file exists in the package directory."""
-    assert os.path.isfile("theme_news_agent/theme_news_agent/agent.py"), "The file 'theme_news_agent/theme_news_agent/agent.py' should exist." 
+    assert os.path.isfile("theme_news_agent/theme_news_agent/agent.py"), "The file 'theme_news_agent/theme_news_agent/agent.py' should exist."
+
+def test_sub_agents_directory_exists():
+    """Test case 1.1.5: Check if the sub_agents directory exists in the package directory."""
+    assert os.path.isdir("theme_news_agent/theme_news_agent/sub_agents"), "The directory 'theme_news_agent/theme_news_agent/sub_agents/' should exist." 
