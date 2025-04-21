@@ -1,0 +1,17 @@
+# Environment variables
+theme_news_agent/.env
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Data files (if specified in TODO 1.4)
+# data/
+
+# Log files
+*.log 

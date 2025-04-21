@@ -57,8 +57,7 @@
         - `TREND_TOP_N=20` # 트렌드 분석 상위 N개
         - `HISTORICAL_DATA_PATH="data/historical_themes.json"` # 과거 데이터 저장 경로
     - [X] `.env.example`을 복사하여 `theme_news_agent/.env` 생성.
-    - [ ] 실제 API 키 및 필요한 구성 값으로 `theme_news_agent/.env` 채우기. **(`.env` 파일은 커밋하지 않음)**
-    - [ ] `.gitignore` 파일에 `.env` 및 민감 정보 파일 패턴 추가.
+    - [X] `.gitignore` 파일에 `.env` 및 민감 정보 파일 패턴 추가.
 
 - [ ] **1.4 기본 프로젝트 파일:**
     - [ ] 에이전트 목적, 설정 방법, 실행 방법 등을 포함하는 상세 `theme_news_agent/README.md` 생성.

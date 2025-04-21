@@ -213,3 +213,17 @@
 *   **단계:**
     1.  `theme_news_agent/` 디렉토리 내부에 `.env` 파일이 존재하는지 확인합니다.
 *   **예상 결과:** `theme_news_agent/.env` 파일이 존재합니다.
+
+### 3.2. Git 무시 설정
+
+#### 3.2.1. `.gitignore`에 `.env` 추가 확인
+
+- [X]
+*   **테스트 케이스 ID:** `test_env_ignored`
+*   **우선순위:** 높음
+*   **유형:** 기능 테스트
+*   **설명:** `.gitignore` 파일에 `theme_news_agent/.env` 경로가 포함되어 Git 추적에서 제외되는지 확인합니다.
+*   **단계:**
+    1.  `git check-ignore theme_news_agent/.env` 명령을 실행합니다.
+    2.  명령어가 성공적으로 실행되고 해당 경로를 출력하는지 확인합니다.
+*   **예상 결과:** `git check-ignore` 명령이 성공하고 `theme_news_agent/.env`를 출력합니다.
