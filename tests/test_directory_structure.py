@@ -71,4 +71,8 @@ def test_sub_agent_init_files_exist():
 
 def test_deployment_directory_exists():
     """Test case 1.1.9: Check if the deployment directory exists."""
-    assert os.path.isdir("theme_news_agent/deployment"), "The directory 'theme_news_agent/deployment/' should exist." 
+    assert os.path.isdir("theme_news_agent/deployment"), "The directory 'theme_news_agent/deployment/' should exist."
+
+def test_eval_directory_exists():
+    """Test case 1.1.10: Check if the eval directory exists."""
+    assert os.path.isdir("theme_news_agent/eval"), "The directory 'theme_news_agent/eval/' should exist." 
