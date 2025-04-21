@@ -44,9 +44,11 @@
 
 ### 2. 테스트 구조화
 
+**참고:** 모든 테스트 관련 파일은 프로젝트 루트 디렉토리 (`theme_news_agent` 디렉토리와 동일한 레벨)에 위치한 `tests/` 디렉토리 내에 구성합니다.
+
 각 컴포넌트/모듈별로 테스트 파일을 구성합니다:
 
-1. 파일 명명 규칙: `test_[모듈명].py`
+1. 파일 명명 규칙: `test_[모듈명].py` (예: `tests/test_directory_structure.py`)
 2. 테스트 클래스/함수 명명 규칙: `Test[클래스명]` / `test_[함수명]`
 3. 각 테스트는 독립적으로 실행 가능해야 합니다.
 4. 필요한 경우 fixtures를 사용하여 테스트 환경을 설정합니다.
@@ -132,24 +134,30 @@ def test_기능명():
 
 ### 1. 테스트 실행 방법
 
+**참고:** 모든 `pytest` 명령은 프로젝트 루트 디렉토리 (예: `/home/jhbum01/project/custom_agent/theme_news`)에서 실행해야 합니다. `theme_news_agent` 디렉토리 내부에서 실행하면 `tests` 디렉토리를 찾지 못할 수 있습니다.
+
 1. 전체 테스트 실행:
-   ```
-   pytest
+   ```bash
+   # 프로젝트 루트에서 실행
+   pytest tests/
    ```
 
 2. 특정 모듈만 테스트:
-   ```
+   ```bash
+   # 프로젝트 루트에서 실행
    pytest tests/test_특정모듈.py
    ```
 
 3. 특정 테스트 함수만 실행:
-   ```
+   ```bash
+   # 프로젝트 루트에서 실행
    pytest tests/test_특정모듈.py::test_특정함수
    ```
 
 4. 커버리지 리포트 생성:
-   ```
-   pytest --cov=패키지명
+   ```bash
+   # 프로젝트 루트에서 실행
+   pytest --cov=theme_news_agent tests/
    ```
 
 ### 2. 테스트 결과 해석
