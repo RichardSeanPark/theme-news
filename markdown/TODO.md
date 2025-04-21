@@ -23,7 +23,7 @@
     - [X] `theme_news_agent/tests/` 디렉토리 생성.
 
 - [ ] **1.2 의존성 관리 초기화:**
-    - [ ] `theme_news_agent/` 디렉토리로 이동.
+    - [X] `theme_news_agent/` 디렉토리로 이동.
     - [ ] `poetry init` 실행하여 `pyproject.toml` 생성. 프로젝트 메타데이터(이름, 버전, 설명 등) 구성.
     - [ ] `Dev_Plan.md` (섹션 7.2) 및 `Design.md` 기반 핵심 의존성을 `poetry add`를 사용하여 추가:
         - `google-adk` # ADK 프레임워크 (LLM 연결 포함)
