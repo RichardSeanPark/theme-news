@@ -2198,6 +2198,23 @@ files = [
 cli = ["click (>=5.0)"]
 
 [[package]]
+name = "pytrends"
+version = "4.9.2"
+description = "Pseudo API for Google Trends"
+optional = false
+python-versions = ">=3.7"
+groups = ["main"]
+files = [
+    {file = "pytrends-4.9.2-py3-none-any.whl", hash = "sha256:d7d0ee956be2f6e3e9fc09376c4615efb9347039d6d1f46e6f4326a5b7a14f67"},
+    {file = "pytrends-4.9.2.tar.gz", hash = "sha256:691c6e36b1aeaa4754f3692bdbad0dff446e528ffb052eee2e7f139aaa2c6989"},
+]
+
+[package.dependencies]
+lxml = "*"
+pandas = ">=0.25"
+requests = ">=2.0"
+
+[[package]]
 name = "pytz"
 version = "2025.2"
 description = "World timezone definitions, modern and historical"
@@ -3031,4 +3048,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.13"
-content-hash = "bacf92581a3b6055f72e4d6e6d0564f99f29c2a3388219b61adc17c43ae4bafc"
+content-hash = "e4a856d33597a9b14dbd7962684da34bf962200c1a11616f8a629ee5e91ff445"

@@ -97,14 +97,14 @@
     - [X] 스크래핑 시 HTML 구조 변경에 대비한 견고한 파싱 로직 및 오류 처리 구현.
     - [X] 파싱 결과(티커 심볼, 회사명 등)를 `ArticleData`와 유사한 표준 형식으로 변환 (예: `title`=회사명, `content`=티커 심볼, `source`="Yahoo Finance Trending", `published`=수집 시각).
 
-- [ ] **2.5 검색 트렌드 도구 구현 (`SearchTrendTool` - 신규):**
-    - [ ] `theme_news_agent/sub_agents/data_collection/tools/search_trend_tool.py` 생성.
-    - [ ] `@Tool` 데코레이터 적용 함수 정의: `fetch_google_trends()`, `fetch_naver_datalab_trends()`.
-    - [ ] `pytrends` 라이브러리 설치 (`poetry add pytrends`).
-    - [ ] `pytrends` 사용하여 Google Trends 일간/실시간 인기 급상승 검색어 가져오기 로직 구현 (지역 설정: 한국, 미국 등).
+- [X] **2.5 검색 트렌드 도구 구현 (`SearchTrendTool` - 신규):**
+    - [X] `theme_news_agent/sub_agents/data_collection/tools/search_trend_tool.py` 생성.
+    - [X] `@Tool` 데코레이터 적용 함수 정의: `fetch_google_trends()`, `fetch_naver_datalab_trends()`.
+    - [X] `pytrends` 라이브러리 설치 (`poetry add pytrends`).
+    - [X] `pytrends` 사용하여 Google Trends 일간/실시간 인기 급상승 검색어 가져오기 로직 구현 (지역 설정: 한국, 미국 등).
     - [ ] (고급) Naver DataLab 웹사이트 스크래핑 또는 관련 비공식 라이브러리를 사용하여 네이버 급상승 검색어 데이터 가져오기 로직 구현.
-    - [ ] 가져온 검색어 목록을 `ArticleData` 표준 형식으로 변환 (예: `title`=검색어, `source`="Google Trends" / "Naver DataLab", `content`=None, `published`=수집 시각).
-    - [ ] 관련 라이브러리/스크래핑 오류 처리 구현.
+    - [X] 가져온 검색어 목록을 `ArticleData` 표준 형식으로 변환 (예: `title`=검색어, `source`="Google Trends" / "Naver DataLab", `content`=None, `published`=수집 시각).
+    - [X] 관련 라이브러리/스크래핑 오류 처리 구현.
 
 - [ ] **2.6 웹 크롤링 도구 구현 (`WebCrawlingTool` - 기존, 순서 조정):**
     - [ ] `theme_news_agent/sub_agents/data_collection/tools/web_crawling_tool.py` 생성 (기존과 동일).

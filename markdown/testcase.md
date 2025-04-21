@@ -442,7 +442,7 @@
 
 ### 2.4.2. 스크래핑 실패 시 오류 처리 테스트
 
-- [X] # 모킹으로 구현 및 테스트 완료
+- [X]
 *   **테스트 케이스 ID:** `test_fetch_trending_tickers_scraping_failure`
 *   **우선순위:** 중간
 *   **유형:** 단위 테스트 (모킹 사용)
@@ -467,3 +467,46 @@
     3.  반환값이 빈 리스트(`[]`)인지 확인합니다.
     4.  로그 출력에 "Playwright error fetching Yahoo Finance..." 같은 오류 메시지가 포함되어 있는지 확인합니다.
 *   **예상 결과:** 빈 리스트를 반환하고, 적절한 오류 로그 메시지를 출력합니다.
+
+## 2.5. 검색 트렌드 도구 구현 (`SearchTrendTool`)
+
+### 2.5.1. `fetch_google_trends` 성공 테스트
+
+- [X]
+*   **테스트 케이스 ID:** `test_fetch_google_trends_success`
+*   **우선순위:** 높음
+*   **유형:** 통합 테스트 (Live API)
+*   **설명:** `fetch_google_trends` 함수가 `pytrends` 라이브러리를 사용하여 실제 Google Trends API를 호출하고 예외 없이 검색어 정보 딕셔너리 리스트를 반환하는지 확인합니다. (주의: 네트워크 연결 필요)
+*   **단계:**
+    1.  `fetch_google_trends` 함수를 호출합니다 (예: `region='KR'`).
+    2.  반환값이 리스트(`list`) 타입인지 확인합니다.
+    3.  함수 호출 중 예외가 발생하지 않았는지 확인합니다.
+    4.  (선택적) 리스트가 비어있지 않다면, 첫 번째 항목이 예상된 키(`title`, `content`, `source`, `published`, `url`)를 포함하고 `source`가 올바른지 확인합니다.
+*   **예상 결과:** 예외 없이 검색어 정보 딕셔너리 리스트를 반환합니다. (트렌드 유무에 따라 빈 리스트일 수 있음)
+
+### 2.5.2. `pytrends` 라이브러리 오류 시 처리 테스트
+
+- [X]
+*   **테스트 케이스 ID:** `test_fetch_google_trends_pytrends_error`
+*   **우선순위:** 높음
+*   **유형:** 단위 테스트 (모킹 사용)
+*   **설명:** `pytrends` 라이브러리 함수(`trending_searches`) 호출 중 예외 발생 시, 함수가 빈 리스트를 반환하고 오류 로그를 남기는지 확인합니다.
+*   **단계:**
+    1.  `pytrends.request.TrendReq.trending_searches` 메서드를 모킹하여 `Exception`을 발생시키도록 설정합니다.
+    2.  `fetch_google_trends` 함수를 호출합니다.
+    3.  반환값이 빈 리스트(`[]`)인지 확인합니다.
+    4.  로그 출력에 "Error fetching Google Trends..." 같은 오류 메시지가 포함되어 있는지 확인합니다.
+*   **예상 결과:** 빈 리스트를 반환하고, 적절한 오류 로그 메시지를 출력합니다.
+
+### 2.5.3. `fetch_naver_datalab_trends` 플레이스홀더 테스트
+
+- [X]
+*   **테스트 케이스 ID:** `test_fetch_naver_datalab_trends_placeholder`
+*   **우선순위:** 중간
+*   **유형:** 단위 테스트
+*   **설명:** `fetch_naver_datalab_trends` 함수가 현재 구현되지 않았으므로, 호출 시 빈 리스트를 반환하고 경고 로그를 남기는지 확인합니다.
+*   **단계:**
+    1.  `fetch_naver_datalab_trends` 함수를 호출합니다.
+    2.  반환값이 빈 리스트(`[]`)인지 확인합니다.
+    3.  로그 출력에 "fetch_naver_datalab_trends_func is not implemented yet." 경고 메시지가 포함되어 있는지 확인합니다.
+*   **예상 결과:** 빈 리스트를 반환하고, 경고 로그 메시지를 출력합니다.
