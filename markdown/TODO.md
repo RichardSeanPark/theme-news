@@ -20,7 +20,7 @@
     - [X] `sub_agents/` 및 각 하위 에이전트 디렉토리에 `__init__.py` 파일 생성.
     - [X] `theme_news_agent/deployment/` 디렉토리 생성.
     - [X] `theme_news_agent/eval/` 디렉토리 생성.
-    - [ ] `theme_news_agent/tests/` 디렉토리 생성.
+    - [X] `theme_news_agent/tests/` 디렉토리 생성.
 
 - [ ] **1.2 의존성 관리 초기화:**
     - [ ] `theme_news_agent/` 디렉토리로 이동.

@@ -126,3 +126,14 @@
 *   **단계:**
     1.  `theme_news_agent/` 디렉토리 내부에 `eval/` 디렉토리가 존재하는지 확인합니다.
 *   **예상 결과:** `theme_news_agent/eval/` 디렉토리가 존재합니다.
+
+#### 1.1.11. `tests/` 디렉토리 생성: `theme_news_agent/tests/`
+
+- [X]
+*   **테스트 케이스 ID:** `test_tests_directory_creation`
+*   **우선순위:** 높음
+*   **유형:** 기능 테스트
+*   **설명:** `theme_news_agent/` 내부에 `tests/` 디렉토리가 성공적으로 생성되었는지 확인합니다.
+*   **단계:**
+    1.  `theme_news_agent/` 디렉토리 내부에 `tests/` 디렉토리가 존재하는지 확인합니다.
+*   **예상 결과:** `theme_news_agent/tests/` 디렉토리가 존재합니다.
