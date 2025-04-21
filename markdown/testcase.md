@@ -255,3 +255,29 @@
     1.  `git check-ignore theme_news_agent/data/` 명령을 실행합니다.
     2.  명령어가 성공적으로 실행되고 해당 경로를 출력하는지 확인합니다.
 *   **예상 결과:** `git check-ignore` 명령이 성공하고 `theme_news_agent/data/`를 출력합니다.
+
+## 2.1. DataCollectionAgent 정의
+
+### 2.1.1. `DataCollectionAgent` 클래스 존재 및 상속 확인
+
+- [X]
+*   **테스트 케이스 ID:** `test_data_collection_agent_definition`
+*   **우선순위:** 높음
+*   **유형:** 단위 테스트
+*   **설명:** `theme_news_agent.sub_agents.data_collection.agent` 모듈에 `DataCollectionAgent` 클래스가 정의되어 있고, `google.adk.Agent`를 상속하는지 확인합니다.
+*   **단계:**
+    1.  `theme_news_agent.sub_agents.data_collection.agent` 모듈을 임포트합니다.
+    2.  `DataCollectionAgent` 클래스가 해당 모듈에 존재하는지 확인합니다.
+    3.  `DataCollectionAgent` 클래스가 `google.adk.Agent`의 서브클래스인지 확인합니다.
+*   **예상 결과:** 클래스가 존재하고 `google.adk.Agent`를 상속합니다.
+
+### 2.1.2. `DataCollectionAgent` 인스턴스 생성 확인
+
+- [X]
+*   **테스트 케이스 ID:** `test_data_collection_agent_instantiation`
+*   **우선순위:** 높음
+*   **유형:** 단위 테스트
+*   **설명:** `DataCollectionAgent` 클래스의 인스턴스를 성공적으로 생성할 수 있는지 확인합니다.
+*   **단계:**
+    1.  `DataCollectionAgent()`를 호출하여 인스턴스를 생성합니다.
+*   **예상 결과:** 오류 없이 인스턴스가 생성됩니다.

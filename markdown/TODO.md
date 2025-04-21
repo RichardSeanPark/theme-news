@@ -65,9 +65,9 @@
 
 ## 2단계: 데이터 수집 에이전트 구현
 
-- [-] **2.1 `DataCollectionAgent` 정의:** # testcase-guide.md 부재로 테스트 불가
-    - [-] `theme_news_agent/sub_agents/data_collection/agent.py`에 `DataCollectionAgent` 클래스 정의 (`google.adk.Agent` 상속).
-    - [-] `__init__` 메서드에서 필요한 도구 (News, Blog/Cafe, **Financial Trend**, **Search Trend**, Crawling) 클래스 인스턴스화.
+- [X] **2.1 `DataCollectionAgent` 정의:**
+    - [X] `theme_news_agent/sub_agents/data_collection/agent.py`에 `DataCollectionAgent` 클래스 정의 (`google.adk.Agent` 상속).
+    - [X] `__init__` 메서드에서 필요한 도구 (News, Blog/Cafe, **Financial Trend**, **Search Trend**, Crawling) 클래스 인스턴스화.
 
 - [ ] **2.2 뉴스 API 도구 구현 (`NewsApiTool`):**
     - [ ] `theme_news_agent/sub_agents/data_collection/tools/news_api_tool.py` 생성.
