@@ -18,4 +18,18 @@ def test_agent_file_exists():
 
 def test_sub_agents_directory_exists():
     """Test case 1.1.5: Check if the sub_agents directory exists in the package directory."""
-    assert os.path.isdir("theme_news_agent/theme_news_agent/sub_agents"), "The directory 'theme_news_agent/theme_news_agent/sub_agents/' should exist." 
+    assert os.path.isdir("theme_news_agent/theme_news_agent/sub_agents"), "The directory 'theme_news_agent/theme_news_agent/sub_agents/' should exist."
+
+def test_specific_sub_agent_directories_exist():
+    """Test case 1.1.6: Check if specific sub-agent directories exist."""
+    base_path = "theme_news_agent/theme_news_agent/sub_agents"
+    sub_agent_dirs = [
+        "data_collection",
+        "keyword_extraction",
+        "theme_clustering",
+        "trend_analysis",
+        "summary_generation"
+    ]
+    for dir_name in sub_agent_dirs:
+        path = os.path.join(base_path, dir_name)
+        assert os.path.isdir(path), f"The directory '{path}' should exist." 

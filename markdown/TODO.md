@@ -10,12 +10,12 @@
     - [X] `theme_news_agent/theme_news_agent/__init__.py` 생성.
     - [X] `theme_news_agent/theme_news_agent/agent.py` 생성 (마스터 에이전트용).
     - [X] `theme_news_agent/theme_news_agent/sub_agents/` 디렉토리 생성.
-    - [ ] `sub_agents/` 내부에 계획된 각 에이전트용 하위 디렉토리 생성:
-        - `data_collection/`
-        - `keyword_extraction/`
-        - `theme_clustering/`
-        - `trend_analysis/`
-        - `summary_generation/`
+    - [X] `sub_agents/` 내부에 계획된 각 에이전트용 하위 디렉토리 생성:
+        - [X] `data_collection/`
+        - [X] `keyword_extraction/`
+        - [X] `theme_clustering/`
+        - [X] `trend_analysis/`
+        - [X] `summary_generation/`
     - [ ] 각 하위 에이전트 디렉토리 내부에 `agent.py`, `prompt.py` (LLM 에이전트용), `tools/` (도구 사용 에이전트용) 생성.
     - [ ] `sub_agents/` 및 각 하위 에이전트 디렉토리에 `__init__.py` 파일 생성.
     - [ ] `theme_news_agent/deployment/` 디렉토리 생성.

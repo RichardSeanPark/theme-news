@@ -58,3 +58,18 @@
 *   **단계:**
     1.  `theme_news_agent/theme_news_agent/` 디렉토리 내부에 `sub_agents/` 디렉토리가 존재하는지 확인합니다.
 *   **예상 결과:** `theme_news_agent/theme_news_agent/sub_agents/` 디렉토리가 존재합니다.
+
+#### 1.1.6. 개별 하위 에이전트 디렉토리 생성
+
+- [X]
+*   **테스트 케이스 ID:** `test_specific_sub_agent_directories_creation`
+*   **우선순위:** 높음
+*   **유형:** 기능 테스트
+*   **설명:** `sub_agents/` 내부에 개별 에이전트(`data_collection`, `keyword_extraction`, `theme_clustering`, `trend_analysis`, `summary_generation`) 디렉토리가 성공적으로 생성되었는지 확인합니다.
+*   **단계:**
+    1.  `theme_news_agent/theme_news_agent/sub_agents/` 디렉토리 내부에 `data_collection/` 디렉토리가 존재하는지 확인합니다.
+    2.  `theme_news_agent/theme_news_agent/sub_agents/` 디렉토리 내부에 `keyword_extraction/` 디렉토리가 존재하는지 확인합니다.
+    3.  `theme_news_agent/theme_news_agent/sub_agents/` 디렉토리 내부에 `theme_clustering/` 디렉토리가 존재하는지 확인합니다.
+    4.  `theme_news_agent/theme_news_agent/sub_agents/` 디렉토리 내부에 `trend_analysis/` 디렉토리가 존재하는지 확인합니다.
+    5.  `theme_news_agent/theme_news_agent/sub_agents/` 디렉토리 내부에 `summary_generation/` 디렉토리가 존재하는지 확인합니다.
+*   **예상 결과:** 모든 개별 하위 에이전트 디렉토리가 존재합니다.
