@@ -62,4 +62,8 @@ def test_pytest_dev_dependency_exists():
 
 def test_poetry_lock_exists():
     """Test case 2.1.4: Check if poetry.lock exists in theme_news_agent/."""
-    assert os.path.isfile("theme_news_agent/poetry.lock"), "The file 'theme_news_agent/poetry.lock' should exist." 
+    assert os.path.isfile("theme_news_agent/poetry.lock"), "The file 'theme_news_agent/poetry.lock' should exist."
+
+def test_env_example_exists():
+    """Test case 3.1.1: Check if .env.example exists in theme_news_agent/."""
+    assert os.path.isfile("theme_news_agent/.env.example"), "The file 'theme_news_agent/.env.example' should exist." 

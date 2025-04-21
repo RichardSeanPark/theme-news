@@ -40,7 +40,7 @@
     - [X] `poetry install --with dev` 실행하여 모든 의존성 설치 및 `poetry.lock` 생성.
 
 - [ ] **1.3 환경 변수 구성:**
-    - [ ] ADK 퀵스타트 및 `Dev_Plan.md` 요구사항 기반으로 `theme_news_agent/.env.example` 생성. 다음 플레이스홀더 포함:
+    - [X] ADK 퀵스타트 및 `Dev_Plan.md` 요구사항 기반으로 `theme_news_agent/.env.example` 생성. 다음 플레이스홀더 포함:
         - `# Gemini API Configuration`
         - `GOOGLE_API_KEY=` # (AI Studio Key)
         - `GOOGLE_GENAI_USE_VERTEXAI="False"` # (True로 변경 시 아래 설정 필요)

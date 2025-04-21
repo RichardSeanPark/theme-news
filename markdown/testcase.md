@@ -187,3 +187,18 @@
 *   **단계:**
     1.  `theme_news_agent/` 디렉토리 내부에 `poetry.lock` 파일이 존재하는지 확인합니다.
 *   **예상 결과:** `theme_news_agent/poetry.lock` 파일이 존재합니다.
+
+## 3. 환경 설정 파일
+
+### 3.1. 예제 환경 파일
+
+#### 3.1.1. `.env.example` 파일 생성
+
+- [X]
+*   **테스트 케이스 ID:** `test_env_example_creation`
+*   **우선순위:** 높음
+*   **유형:** 기능 테스트
+*   **설명:** `theme_news_agent/` 디렉토리 내부에 `.env.example` 파일이 성공적으로 생성되었는지 확인합니다.
+*   **단계:**
+    1.  `theme_news_agent/` 디렉토리 내부에 `.env.example` 파일이 존재하는지 확인합니다.
+*   **예상 결과:** `theme_news_agent/.env.example` 파일이 존재합니다.
