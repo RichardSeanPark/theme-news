@@ -164,3 +164,15 @@
     1.  `theme_news_agent/pyproject.toml` 파일을 로드합니다.
     2.  `[tool.poetry.dependencies]` 섹션에 명시된 모든 핵심 의존성이 존재하는지 확인합니다.
 *   **예상 결과:** 모든 핵심 의존성이 `pyproject.toml` 파일에 명시되어 있습니다.
+
+#### 2.1.3. 개발 의존성 추가 확인 (pytest)
+
+- [X]
+*   **테스트 케이스 ID:** `test_dev_dependency_pytest_added`
+*   **우선순위:** 높음
+*   **유형:** 기능 테스트
+*   **설명:** `pyproject.toml` 파일의 `[tool.poetry.group.dev.dependencies]` 섹션에 `pytest`가 포함되었는지 확인합니다.
+*   **단계:**
+    1.  `theme_news_agent/pyproject.toml` 파일을 로드합니다.
+    2.  `[tool.poetry.group.dev.dependencies]` 섹션에 `pytest`가 존재하는지 확인합니다.
+*   **예상 결과:** `pytest` 의존성이 `pyproject.toml` 파일의 개발 그룹에 명시되어 있습니다.

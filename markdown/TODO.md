@@ -36,7 +36,7 @@
         - `pandas` # (데이터 처리 및 분석용)
         - `pydantic` # (데이터 유효성 검사 및 모델링용)
         - `python-dotenv` # (.env 로딩용)
-    - [ ] `poetry add pytest --group dev` # 테스트용 의존성 추가
+    - [X] `poetry add pytest --group dev` # 테스트용 의존성 추가
     - [ ] `poetry install --with dev` 실행하여 모든 의존성 설치 및 `poetry.lock` 생성.
 
 - [ ] **1.3 환경 변수 구성:**

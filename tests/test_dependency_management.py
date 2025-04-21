@@ -44,4 +44,18 @@ def test_core_dependencies_exist():
     except toml.TomlDecodeError:
         assert False, f"Failed to parse TOML file: {file_path}"
     except Exception as e:
+        assert False, f"An error occurred: {e}"
+
+def test_pytest_dev_dependency_exists():
+    """Test case 2.1.3: Check if pytest is listed as a dev dependency."""
+    file_path = "theme_news_agent/pyproject.toml"
+    assert os.path.isfile(file_path), f"File not found: {file_path}"
+    
+    try:
+        data = toml.load(file_path)
+        dev_dependencies = data.get("tool", {}).get("poetry", {}).get("group", {}).get("dev", {}).get("dependencies", {})
+        assert "pytest" in dev_dependencies, "pytest not found in [tool.poetry.group.dev.dependencies]"
+    except toml.TomlDecodeError:
+        assert False, f"Failed to parse TOML file: {file_path}"
+    except Exception as e:
         assert False, f"An error occurred: {e}" 
