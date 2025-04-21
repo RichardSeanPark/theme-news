@@ -17,7 +17,7 @@
         - [X] `trend_analysis/`
         - [X] `summary_generation/`
     - [X] 각 하위 에이전트 디렉토리 내부에 `agent.py`, `prompt.py` (LLM 에이전트용), `tools/` (도구 사용 에이전트용) 생성.
-    - [ ] `sub_agents/` 및 각 하위 에이전트 디렉토리에 `__init__.py` 파일 생성.
+    - [X] `sub_agents/` 및 각 하위 에이전트 디렉토리에 `__init__.py` 파일 생성.
     - [ ] `theme_news_agent/deployment/` 디렉토리 생성.
     - [ ] `theme_news_agent/eval/` 디렉토리 생성.
     - [ ] `theme_news_agent/tests/` 디렉토리 생성.

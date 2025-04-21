@@ -48,4 +48,23 @@ def test_sub_agent_internal_structure_exists():
     for sub_agent, items in structure.items():
         for item_name, check_func in items:
             path = os.path.join(base_path, sub_agent, item_name)
-            assert check_func(path), f"The item '{path}' should exist and be of the correct type." 
+            assert check_func(path), f"The item '{path}' should exist and be of the correct type."
+
+def test_sub_agent_init_files_exist():
+    """Test case 1.1.8: Check if __init__.py files exist in sub_agents and its subdirectories."""
+    base_path = "theme_news_agent/theme_news_agent/sub_agents"
+    # Check __init__.py in sub_agents itself
+    init_path = os.path.join(base_path, "__init__.py")
+    assert os.path.isfile(init_path), f"The file '{init_path}' should exist."
+
+    # Check __init__.py in each sub-agent directory
+    sub_agent_dirs = [
+        "data_collection",
+        "keyword_extraction",
+        "theme_clustering",
+        "trend_analysis",
+        "summary_generation"
+    ]
+    for dir_name in sub_agent_dirs:
+        init_path = os.path.join(base_path, dir_name, "__init__.py")
+        assert os.path.isfile(init_path), f"The file '{init_path}' should exist." 

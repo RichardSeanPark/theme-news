@@ -88,3 +88,19 @@
     4.  `trend_analysis` 디렉토리 내부에 `agent.py` 파일과 `tools/` 디렉토리가 존재하는지 확인합니다.
     5.  `summary_generation` 디렉토리 내부에 `agent.py`와 `prompt.py` 파일이 존재하는지 확인합니다.
 *   **예상 결과:** 모든 필요한 파일 및 디렉토리가 각 하위 에이전트 디렉토리 내에 존재합니다.
+
+#### 1.1.8. 하위 에이전트 `__init__.py` 파일 생성
+
+- [X]
+*   **테스트 케이스 ID:** `test_sub_agent_init_files_creation`
+*   **우선순위:** 높음
+*   **유형:** 기능 테스트
+*   **설명:** `sub_agents` 디렉토리와 모든 하위 에이전트 디렉토리 내부에 `__init__.py` 파일이 성공적으로 생성되었는지 확인합니다.
+*   **단계:**
+    1.  `theme_news_agent/theme_news_agent/sub_agents/__init__.py` 파일이 존재하는지 확인합니다.
+    2.  `data_collection` 디렉토리 내부에 `__init__.py` 파일이 존재하는지 확인합니다.
+    3.  `keyword_extraction` 디렉토리 내부에 `__init__.py` 파일이 존재하는지 확인합니다.
+    4.  `theme_clustering` 디렉토리 내부에 `__init__.py` 파일이 존재하는지 확인합니다.
+    5.  `trend_analysis` 디렉토리 내부에 `__init__.py` 파일이 존재하는지 확인합니다.
+    6.  `summary_generation` 디렉토리 내부에 `__init__.py` 파일이 존재하는지 확인합니다.
+*   **예상 결과:** 모든 필요한 `__init__.py` 파일이 존재합니다.
