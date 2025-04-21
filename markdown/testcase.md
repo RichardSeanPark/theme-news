@@ -281,3 +281,77 @@
 *   **단계:**
     1.  `DataCollectionAgent()`를 호출하여 인스턴스를 생성합니다.
 *   **예상 결과:** 오류 없이 인스턴스가 생성됩니다.
+
+## 2.2. 뉴스 API 도구 구현 (`NewsApiTool`)
+
+### 2.2.1. `fetch_newsapi_headlines` 성공 테스트
+
+- [X]
+*   **테스트 케이스 ID:** `test_fetch_newsapi_headlines_success`
+*   **우선순위:** 높음
+*   **유형:** 통합 테스트 (Live API)
+*   **설명:** `fetch_newsapi_headlines` 함수가 유효한 API 키로 실제 NewsAPI를 호출했을 때 예외 없이 리스트를 반환하는지 확인합니다. (주의: 유효한 `NEWS_API_KEY` 환경 변수 및 네트워크 연결 필요)
+*   **단계:**
+    1.  유효한 `NEWS_API_KEY` 환경 변수를 설정합니다.
+    2.  `fetch_newsapi_headlines` 함수를 호출합니다.
+    3.  반환값이 리스트(`list`) 타입인지 확인합니다.
+    4.  함수 호출 중 예외가 발생하지 않았는지 확인합니다.
+*   **예상 결과:** 예외 없이 리스트를 반환합니다. (반환되는 리스트의 내용은 API 응답에 따라 달라질 수 있음)
+
+### 2.2.2. `fetch_nytimes_articles` 성공 테스트
+
+- [X]
+*   **테스트 케이스 ID:** `test_fetch_nytimes_articles_success`
+*   **우선순위:** 높음
+*   **유형:** 통합 테스트 (Live API)
+*   **설명:** `fetch_nytimes_articles` 함수가 유효한 API 키로 실제 NYTimes API를 호출했을 때 예외 없이 리스트를 반환하는지 확인합니다. (주의: 유효한 `NYT_API_KEY` 환경 변수 및 네트워크 연결 필요)
+*   **단계:**
+    1.  유효한 `NYT_API_KEY` 환경 변수를 설정합니다.
+    2.  `fetch_nytimes_articles` 함수를 호출합니다.
+    3.  반환값이 리스트(`list`) 타입인지 확인합니다.
+    4.  함수 호출 중 예외가 발생하지 않았는지 확인합니다.
+*   **예상 결과:** 예외 없이 리스트를 반환합니다. (반환되는 리스트의 내용은 API 응답에 따라 달라질 수 있음)
+
+### 2.2.3. `fetch_naver_news` 성공 테스트
+
+- [X]
+*   **테스트 케이스 ID:** `test_fetch_naver_news_success`
+*   **우선순위:** 높음
+*   **유형:** 통합 테스트 (Live API)
+*   **설명:** `fetch_naver_news` 함수가 유효한 API 키로 실제 Naver News API를 호출했을 때 예외 없이 리스트를 반환하는지 확인합니다. (주의: 유효한 `NAVER_CLIENT_ID`, `NAVER_CLIENT_SECRET` 환경 변수 및 네트워크 연결 필요)
+*   **단계:**
+    1.  유효한 `NAVER_CLIENT_ID`, `NAVER_CLIENT_SECRET` 환경 변수를 설정합니다.
+    2.  `fetch_naver_news` 함수를 호출합니다.
+    3.  반환값이 리스트(`list`) 타입인지 확인합니다.
+    4.  함수 호출 중 예외가 발생하지 않았는지 확인합니다.
+    5.  (선택적) 반환된 리스트의 각 항목에서 HTML 태그가 제거되었는지 샘플 확인합니다.
+*   **예상 결과:** 예외 없이 리스트를 반환합니다. (반환되는 리스트의 내용은 API 응답에 따라 달라질 수 있음)
+
+### 2.2.4. API 키 누락 시 오류 처리 테스트
+
+- [X]
+*   **테스트 케이스 ID:** `test_news_api_key_missing`
+*   **우선순위:** 높음
+*   **유형:** 단위 테스트
+*   **설명:** 각 뉴스 API 함수가 관련 API 키 환경 변수가 설정되지 않았을 때 빈 리스트를 반환하고 오류 메시지를 출력하는지 확인합니다.
+*   **단계:**
+    1.  각 API 함수에 필요한 환경 변수를 설정하지 않습니다 (또는 None으로 설정).
+    2.  각 함수(`fetch_newsapi_headlines`, `fetch_nytimes_articles`, `fetch_naver_news`)를 호출합니다.
+    3.  반환값이 빈 리스트(`[]`)인지 확인합니다.
+    4.  표준 출력(stdout)에 해당 키 누락 오류 메시지가 출력되었는지 확인합니다.
+*   **예상 결과:** 모든 함수가 빈 리스트를 반환하고, 적절한 오류 메시지를 출력합니다.
+
+### 2.2.5. API 호출 실패 시 오류 처리 테스트
+
+- [X]
+*   **테스트 케이스 ID:** `test_news_api_call_failure`
+*   **우선순위:** 높음
+*   **유형:** 단위 테스트 (모킹 사용)
+*   **설명:** 각 뉴스 API 함수가 API 호출 중 오류(예: `requests.exceptions.RequestException`) 발생 시 빈 리스트를 반환하고 오류 메시지를 출력하는지 확인합니다.
+*   **단계:**
+    1.  `requests.get` 함수를 모킹하여 `requests.exceptions.RequestException` 예외를 발생시키도록 설정합니다.
+    2.  각 API 함수에 필요한 환경 변수를 설정합니다.
+    3.  각 함수(`fetch_newsapi_headlines`, `fetch_nytimes_articles`, `fetch_naver_news`)를 호출합니다.
+    4.  반환값이 빈 리스트(`[]`)인지 확인합니다.
+    5.  표준 출력(stdout)에 API 호출 오류 메시지가 출력되었는지 확인합니다.
+*   **예상 결과:** 모든 함수가 빈 리스트를 반환하고, 적절한 오류 메시지를 출력합니다.

@@ -69,16 +69,16 @@
     - [X] `theme_news_agent/sub_agents/data_collection/agent.py`에 `DataCollectionAgent` 클래스 정의 (`google.adk.Agent` 상속).
     - [X] `__init__` 메서드에서 필요한 도구 (News, Blog/Cafe, **Financial Trend**, **Search Trend**, Crawling) 클래스 인스턴스화.
 
-- [ ] **2.2 뉴스 API 도구 구현 (`NewsApiTool`):**
-    - [ ] `theme_news_agent/sub_agents/data_collection/tools/news_api_tool.py` 생성.
-    - [ ] `@Tool` 데코레이터를 사용하여 함수 정의 (`fetch_newsapi_headlines`, `fetch_nytimes_articles`, `fetch_naver_news`).
-    - [ ] 각 함수에서 해당 API 호출 로직 구현:
+- [X] **2.2 뉴스 API 도구 구현 (`NewsApiTool`):**
+    - [X] `theme_news_agent/sub_agents/data_collection/tools/news_api_tool.py` 생성.
+    - [X] `@Tool` 데코레이터를 사용하여 함수 정의 (`fetch_newsapi_headlines`, `fetch_nytimes_articles`, `fetch_naver_news`).
+    - [X] 각 함수에서 해당 API 호출 로직 구현:
         - NewsAPI: `https://newsapi.org/v2/top-headlines` (국가별) 또는 `/v2/everything` (키워드/날짜) 사용. `country=kr`, `country=us`, `category=general`, `from`/`to` 파라미터 활용. (트렌드 초기 신호 감지에 중요할 수 있음)
         - NYTimes API: `https://api.nytimes.com/svc/topstories/v2/...` 또는 `Article Search API` 사용. `begin_date`/`end_date` 파라미터 활용.
         - Naver News API: `https://openapi.naver.com/v1/search/news.json` 사용. `query` (다양한 일반/분야별 키워드 조합 사용 고려), `display=100`, `sort=date` 파라미터 활용. `X-Naver-Client-Id`/`Secret` 헤더 설정.
-    - [ ] 환경 변수에서 API 키 및 설정 로드 (API Key, Client ID/Secret, `DATA_FETCH_PERIOD_HOURS`).
-    - [ ] 각 API 응답(JSON)을 표준 Pydantic 모델 (`ArticleData`) 또는 딕셔너리 리스트로 파싱. `published` 필드는 일관된 형식(ISO 8601 권장)으로 변환.
-    - [ ] API 호출 시 `requests` 라이브러리 사용 및 타임아웃 설정, 응답 상태 코드 확인 등 기본 오류 처리 구현.
+    - [X] 환경 변수에서 API 키 및 설정 로드 (API Key, Client ID/Secret, `DATA_FETCH_PERIOD_HOURS`).
+    - [X] 각 API 응답(JSON)을 표준 Pydantic 모델 (`ArticleData`) 또는 딕셔너리 리스트로 파싱. `published` 필드는 일관된 형식(ISO 8601 권장)으로 변환.
+    - [X] API 호출 시 `requests` 라이브러리 사용 및 타임아웃 설정, 응답 상태 코드 확인 등 기본 오류 처리 구현.
 
 - [ ] **2.3 블로그/카페 검색 API 도구 구현 (`BlogCafeApiTool`):**
     - [ ] `theme_news_agent/sub_agents/data_collection/tools/blog_cafe_api_tool.py` 생성.
