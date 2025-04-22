@@ -212,10 +212,10 @@
 
 ## 6단계: 요약 생성 에이전트 구현
 
-- [ ] **6.1 `SummaryGenerationAgent` 정의:**
-    - [ ] `theme_news_agent/sub_agents/summary_generation/agent.py`에 `SummaryGenerationAgent` 클래스 정의 (`google.adk.LlmAgent` 상속).
-    - [ ] `__init__`에서 모델, 설명, 지침 설정.
+- [X] **6.1 `SummaryGenerationAgent` 정의:**
+    - [X] `theme_news_agent/sub_agents/summary_generation/agent.py`에 `SummaryGenerationAgent` 클래스 정의 (`google.adk.LlmAgent` 상속).
+    - [X] `__init__`에서 모델, 설명, 지침 설정.
 
-- [ ] **6.2 요약 프롬프트 정의:**
-    - [ ] `theme_news_agent/sub_agents/summary_generation/prompt.py`에 프롬프트 정의 (`get_summary_prompt`).
-    - [ ] `Design.md`
+- [X] **6.2 요약 프롬프트 정의:**
+    - [X] `theme_news_agent/sub_agents/summary_generation/prompt.py`에 프롬프트 정의 (`get_summary_prompt`).
+    - [X] `Design.md`

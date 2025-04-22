@@ -756,4 +756,96 @@
     7.  `mock_ctx.state` 딕셔너리에 `trend_results` 키가 존재하는지 확인합니다.
     8.  `mock_ctx.state["trend_results"]` 값이 예상되는 최종 순위 리스트 (정렬, 상위 N개 선택, rank 추가 완료)와 일치하는지 확인합니다.
     9.  반환된 문자열이 "Trend analysis complete. Top 5 trends identified and saved." 와 유사한 형식인지 확인합니다.
-*   **예상 결과:** 최종 결과가 상태에 저장되고, 성공 메시지가 반환됩니다. 
+*   **예상 결과:** 최종 결과가 상태에 저장되고, 성공 메시지가 반환됩니다.
+
+## 6단계: 요약 생성 에이전트 구현
+
+### 6.1 `SummaryGenerationAgent` 정의
+
+#### 6.1.1. `SummaryGenerationAgent` 객체 생성 확인
+
+- [X]
+*   **테스트 케이스 ID:** `test_summary_generation_agent_creation`
+*   **우선순위:** 높음
+*   **유형:** 단위 테스트
+*   **설명:** `SummaryGenerationAgent` 클래스의 인스턴스가 성공적으로 생성되는지 확인합니다.
+*   **단계:**
+    1.  `theme_news_agent.sub_agents.summary_generation.agent` 모듈에서 `SummaryGenerationAgent` 클래스를 임포트합니다.
+    2.  `agent = SummaryGenerationAgent()` 코드를 실행하여 인스턴스를 생성합니다.
+    3.  생성된 `agent` 객체가 `SummaryGenerationAgent` 클래스의 인스턴스인지 확인합니다 (예: `isinstance(agent, SummaryGenerationAgent)`).
+*   **예상 결과:** `SummaryGenerationAgent` 객체가 오류 없이 생성됩니다.
+
+#### 6.1.2. `__init__` 속성 확인
+
+- [X]
+*   **테스트 케이스 ID:** `test_summary_generation_agent_init_attributes`
+*   **우선순위:** 높음
+*   **유형:** 단위 테스트
+*   **설명:** 생성된 `SummaryGenerationAgent` 인스턴스의 `model`, `description`, `instruction` 속성이 `__init__` 메서드에서 설정한 기본값 또는 전달된 값과 일치하는지 확인합니다.
+*   **단계:**
+    1.  기본값 또는 특정 값(예: `model="다른모델"`)을 사용하여 `SummaryGenerationAgent` 인스턴스를 생성합니다.
+    2.  `agent.name` 속성이 `__init__`에 지정된 이름 (기본값: 'summary_generator')과 일치하는지 확인합니다.
+    3.  `agent.description` 속성이 `__init__`에 지정된 설명 문자열과 일치하는지 확인합니다.
+    4.  `agent.model` 속성이 생성 시 전달한 모델명 또는 기본값 ('gemini-1.5-flash-latest')과 일치하는지 확인합니다.
+    5.  `agent.instruction` 속성이 생성 시 전달한 지침 또는 기본값 ('')과 일치하는지 확인합니다.
+*   **예상 결과:** 인스턴스의 `name`, `description`, `model`, `instruction` 속성이 `__init__` 메서드에서 정의하거나 전달한 값과 정확히 일치합니다.
+
+### 6.2 요약 프롬프트 정의
+
+#### 6.2.1. `get_summary_prompt` 정상 입력 테스트
+
+- [X]
+*   **테스트 케이스 ID:** `test_get_summary_prompt_normal_input`
+*   **우선순위:** 높음
+*   **유형:** 단위 테스트
+*   **설명:** 유효한 `trend_results` 리스트(순위, 테마명, Z-점수 포함)가 입력되었을 때, `get_summary_prompt` 함수가 프롬프트 템플릿의 `{trend_data_str}` 부분을 올바르게 포맷팅하여 완성된 프롬프트를 반환하는지 확인합니다.
+*   **단계:**
+    1.  `get_summary_prompt` 함수를 임포트합니다.
+    2.  테스트용 `trend_results` 리스트를 생성합니다. (예: `[{'rank': 1, 'theme': 'AI 비서', 'z_score': 3.5}, {'rank': 2, 'theme': '전기차 보조금', 'z_score': 2.1}]`)
+    3.  `get_summary_prompt(test_data)`를 호출하여 결과를 얻습니다.
+    4.  반환된 문자열이 `SUMMARY_PROMPT_TEMPLATE`의 기본 구조를 포함하는지 확인합니다.
+    5.  반환된 문자열 내에 포맷팅된 트렌드 데이터 문자열(예: "- 순위 1: AI 비서 (Z-점수: 3.50)\n- 순위 2: 전기차 보조금 (Z-점수: 2.10)")이 포함되어 있는지 확인합니다.
+    6.  반환된 문자열에 "[뉴스 요약 보고서]" 와 같은 프롬프트의 다른 주요 부분들이 포함되어 있는지 확인합니다.
+*   **예상 결과:** 트렌드 데이터가 올바르게 포맷팅되어 포함된 완전한 프롬프트 문자열이 반환됩니다.
+
+#### 6.2.2. `get_summary_prompt` 빈 입력 테스트
+
+- [X]
+*   **테스트 케이스 ID:** `test_get_summary_prompt_empty_input`
+*   **우선순위:** 중간
+*   **유형:** 단위 테스트
+*   **설명:** 빈 `trend_results` 리스트(`[]`)가 입력되었을 때, `get_summary_prompt` 함수가 `{trend_data_str}` 부분을 "분석된 트렌드 테마가 없습니다."로 대체하여 프롬프트를 반환하는지 확인합니다.
+*   **단계:**
+    1.  `get_summary_prompt` 함수를 임포트합니다.
+    2.  빈 리스트(`[]`)를 인자로 `get_summary_prompt([])`를 호출합니다.
+    3.  반환된 문자열에 "[상위 트렌드 테마 목록]\n분석된 트렌드 테마가 없습니다."가 포함되어 있는지 확인합니다.
+    4.  반환된 문자열이 여전히 `SUMMARY_PROMPT_TEMPLATE`의 다른 주요 구조들을 포함하는지 확인합니다.
+*   **예상 결과:** "분석된 트렌드 테마가 없습니다." 메시지가 포함된 프롬프트 문자열이 반환됩니다.
+
+#### 6.2.3. `get_summary_prompt` 비정상 키 입력 테스트
+
+- [X]
+*   **테스트 케이스 ID:** `test_get_summary_prompt_malformed_keys`
+*   **우선순위:** 중간
+*   **유형:** 단위 테스트
+*   **설명:** `trend_results` 리스트 내의 딕셔너리에 'rank', 'theme', 'z_score' 키가 일부 누락되었을 때, 함수가 오류 없이 기본값('N/A', '알 수 없는 테마')으로 처리하여 프롬프트를 생성하는지 확인합니다.
+*   **단계:**
+    1.  `get_summary_prompt` 함수를 임포트합니다.
+    2.  키가 누락된 딕셔너리를 포함하는 테스트 리스트를 생성합니다. (예: `[{'rank': 1, 'z_score': 2.0}, {'theme': '테마 B', 'z_score': 1.5}]`)
+    3.  `get_summary_prompt(test_data)`를 호출합니다.
+    4.  반환된 문자열 내에 "- 순위 1: 알 수 없는 테마 (Z-점수: 2.00)" 및 "- 순위 N/A: 테마 B (Z-점수: 1.50)"와 같이 기본값으로 처리된 결과가 포함되는지 확인합니다.
+*   **예상 결과:** 누락된 키 값은 'N/A' 또는 '알 수 없는 테마' 등으로 대체되어 포맷팅된 프롬프트가 반환됩니다.
+
+#### 6.2.4. `get_summary_prompt` Z-점수 포맷팅 테스트
+
+- [X]
+*   **테스트 케이스 ID:** `test_get_summary_prompt_z_score_formatting`
+*   **우선순위:** 중간
+*   **유형:** 단위 테스트
+*   **설명:** `trend_results` 리스트 내 'z_score' 값이 숫자일 경우 소수점 둘째 자리까지 포맷팅되고, 숫자가 아니거나 없을 경우 'N/A'로 표시되는지 확인합니다.
+*   **단계:**
+    1.  `get_summary_prompt` 함수를 임포트합니다.
+    2.  다양한 z_score 값을 가진 테스트 리스트를 생성합니다. (예: `[{'rank': 1, 'theme': 'A', 'z_score': 3.14159}, {'rank': 2, 'theme': 'B', 'z_score': 5}, {'rank': 3, 'theme': 'C', 'z_score': None}, {'rank': 4, 'theme': 'D'}]`)
+    3.  `get_summary_prompt(test_data)`를 호출합니다.
+    4.  반환된 문자열 내 각 항목의 Z-점수가 올바르게 포맷팅되었는지 확인합니다. (예: "(Z-점수: 3.14)", "(Z-점수: 5.00)", "(Z-점수: N/A)", "(Z-점수: N/A)")
+*   **예상 결과:** Z-점수가 숫자인 경우 소수점 둘째 자리까지, 그 외에는 'N/A'로 포맷팅됩니다. 
