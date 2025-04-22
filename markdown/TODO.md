@@ -198,16 +198,17 @@
         - [X] 변경된 과거 데이터를 파일에 다시 저장.
     - [X] Z-점수가 추가된 테마 리스트 반환.
 
-- [ ] **5.3 에이전트 로직 구현:**
-    - [ ] `TrendAnalysisAgent.process` 메서드 구현:
-        - `ctx.state.get("clustered_themes")` 로드.
-        - `StatisticalAnalysisTool.calculate_trends` 호출하여 Z-점수 계산 및 데이터 업데이트.
-        - 반환된 테마 리스트를 Z-점수 기준 내림차순 정렬.
-        - 환경 변수 `TREND_TOP_N` 값에 따라 상위 N개 테마 선택.
-        - 각 테마 딕셔너리에 'rank' 키 추가 (1부터 N까지).
+- [X] **5.3 에이전트 로직 구현:**
+    - [X] `TrendAnalysisAgent.process` 메서드 구현:
+        - [X] `ctx.state.get("clustered_themes")` 로드.
+        - [X] `StatisticalAnalysisTool.calculate_trends` 호출하여 Z-점수 계산 및 데이터 업데이트. (실제로는 클래스 속성 `self.stats_tool.func` 호출)
+        - [X] 반환된 테마 리스트를 Z-점수 기준 내림차순 정렬.
+        - [X] 환경 변수 `TREND_TOP_N` 값에 따라 상위 N개 테마 선택 (기본값 20, 유효성 검사 포함).
+        - [X] 각 테마 딕셔너리에 'rank' 키 추가 (1부터 N까지).
+    - [X] 관련 테스트 케이스를 `markdown/testcase2.md`에 정의하고 `tests/sub_agents/trend_analysis/test_agent.py`에 구현 및 실행 완료.
 
-- [ ] **5.4 상태 관리:**
-    - [ ] 최종 순위가 매겨진 상위 트렌드 테마 목록을 세션 상태에 저장: `ctx.state["trend_results"] = ranked_themes`.
+- [X] **5.4 상태 관리:**
+    - [X] 최종 순위가 매겨진 상위 트렌드 테마 목록을 세션 상태(`ctx.state["trend_results"]`)에 저장하는 로직이 `process` 메서드 내에 구현됨.
 
 ## 6단계: 요약 생성 에이전트 구현
 

@@ -278,7 +278,7 @@
     8.  `agent.process(mock_ctx)`를 호출합니다.
     9.  로그 출력에 "키워드 빈도 계산 중 오류 발생" 과 유사한 오류 메시지가 있는지 확인합니다.
     10. `mock_ctx.state["keyword_results"]`가 빈 리스트(`[]`)인지 확인합니다.
-*   **예상 결과:** 오류 로깅 후, `ctx.state["keyword_results"]`에 빈 리스트가 저장됩니다.
+*   **예상 결과:** 오류 로그 발생 후, 상태에 빈 키워드 리스트가 저장되고, 0개 추출 메시지가 반환됩니다.
 
 ## 4단계: 테마 클러스터링 에이전트 구현
 
@@ -588,4 +588,172 @@
     2.  해당 경로에 테스트용 과거 데이터를 생성합니다.
     3.  `calculate_trends` 함수를 호출합니다.
     4.  함수 실행 중 기본 경로가 아닌 설정된 경로에서 파일을 읽고 썼는지 확인합니다 (예: 파일 I/O 모킹 또는 실제 파일 변경 확인).
-*   **예상 결과:** 환경 변수에 지정된 경로의 파일을 사용함. 
+*   **예상 결과:** 환경 변수에 지정된 경로의 파일을 사용함.
+
+### 5.3 에이전트 로직 구현 (`TrendAnalysisAgent.process`)
+
+#### 5.3.1. 상태 데이터 로드 실패 테스트 (`clustered_themes` 누락)
+
+- [X]
+*   **테스트 케이스 ID:** `test_trend_agent_process_missing_state`
+*   **우선순위:** 높음
+*   **유형:** 단위 테스트 (모킹 사용)
+*   **설명:** `ctx.state`에 `clustered_themes` 키가 없거나 값이 없을 때 `process` 메서드가 오류 메시지를 반환하는지 확인합니다.
+*   **단계:**
+    1.  `TrendAnalysisAgent` 인스턴스를 생성합니다.
+    2.  `InvocationContext` 객체를 모킹하고 `state`를 빈 딕셔너리로 설정합니다.
+    3.  `await agent.process(mock_ctx)`를 호출합니다.
+    4.  반환된 문자열에 "Error: 'clustered_themes' not found or invalid in state."가 포함되어 있는지 확인합니다.
+*   **예상 결과:** 지정된 오류 메시지를 반환합니다.
+
+#### 5.3.2. 상태 데이터 형식 오류 테스트 (`clustered_themes`가 리스트가 아님)
+
+- [X]
+*   **테스트 케이스 ID:** `test_trend_agent_process_invalid_state_type`
+*   **우선순위:** 높음
+*   **유형:** 단위 테스트 (모킹 사용)
+*   **설명:** `ctx.state["clustered_themes"]`의 값이 리스트가 아닌 경우 오류 메시지를 반환하는지 확인합니다.
+*   **단계:**
+    1.  `TrendAnalysisAgent` 인스턴스를 생성합니다.
+    2.  `InvocationContext` 객체를 모킹하고 `state["clustered_themes"]`에 문자열이나 숫자 등 리스트가 아닌 값을 설정합니다.
+    3.  `await agent.process(mock_ctx)`를 호출합니다.
+    4.  반환된 문자열에 "Error: 'clustered_themes' not found or invalid in state."가 포함되어 있는지 확인합니다.
+*   **예상 결과:** 지정된 오류 메시지를 반환합니다.
+
+#### 5.3.3. `calculate_trends` 도구 호출 확인 테스트
+
+- [X]
+*   **테스트 케이스 ID:** `test_trend_agent_process_calls_stats_tool`
+*   **우선순위:** 높음
+*   **유형:** 단위 테스트 (모킹 사용)
+*   **설명:** `process` 메서드가 내부적으로 `self.stats_tool.func` (즉, `calculate_trends`)를 올바른 인자(`clustered_themes` 리스트)로 호출하는지 확인합니다.
+*   **단계:**
+    1.  `TrendAnalysisAgent` 인스턴스를 생성합니다.
+    2.  테스트용 `clustered_themes` 리스트를 정의합니다.
+    3.  `InvocationContext` 객체를 모킹하고 `state["clustered_themes"]`를 설정합니다.
+    4.  `agent.stats_tool.func`를 모킹하여 유효한 리스트를 반환하도록 설정합니다.
+    5.  `await agent.process(mock_ctx)`를 호출합니다.
+    6.  모킹된 `agent.stats_tool.func`가 2단계에서 정의한 리스트를 인자로 사용하여 한 번 호출되었는지 확인합니다 (`assert_called_once_with`).
+*   **예상 결과:** `calculate_trends` 함수가 올바른 데이터로 호출됩니다.
+
+#### 5.3.4. `calculate_trends` 도구 호출 실패 테스트
+
+- [X]
+*   **테스트 케이스 ID:** `test_trend_agent_process_stats_tool_exception`
+*   **우선순위:** 높음
+*   **유형:** 단위 테스트 (모킹 사용)
+*   **설명:** `calculate_trends` 함수 호출 중 예외가 발생했을 때 `process` 메서드가 해당 오류 메시지를 반환하는지 확인합니다.
+*   **단계:**
+    1.  `TrendAnalysisAgent` 인스턴스를 생성합니다.
+    2.  테스트용 `clustered_themes` 리스트를 정의하고 `mock_ctx.state`에 설정합니다.
+    3.  `agent.stats_tool.func`를 모킹하여 `Exception("Tool Error")`를 발생시키도록 설정합니다.
+    4.  `await agent.process(mock_ctx)`를 호출합니다.
+    5.  반환된 문자열에 "Error during trend analysis: Tool Error"와 유사한 내용이 포함되어 있는지 확인합니다.
+*   **예상 결과:** 도구 실행 중 발생한 예외 메시지를 포함한 오류 문자열을 반환합니다.
+
+#### 5.3.5. Z-점수 기준 정렬 테스트
+
+- [X]
+*   **테스트 케이스 ID:** `test_trend_agent_process_sorts_by_zscore`
+*   **우선순위:** 높음
+*   **유형:** 단위 테스트 (모킹 사용)
+*   **설명:** `calculate_trends` 함수가 Z-점수를 포함한 테마 리스트를 반환했을 때, `process` 메서드가 이 리스트를 Z-점수 기준 내림차순으로 올바르게 정렬하는지 확인합니다.
+*   **단계:**
+    1.  `TrendAnalysisAgent` 인스턴스를 생성합니다.
+    2.  Z-점수가 무작위 순서로 포함된 테마 딕셔너리 리스트를 정의합니다 (예: `[{'theme': 'A', 'z_score': 1.5}, {'theme': 'B', 'z_score': 3.0}, {'theme': 'C', 'z_score': 0.5}]`).
+    3.  `InvocationContext` 객체를 모킹하고 `state["clustered_themes"]`를 설정합니다 (임의의 값, 여기서는 사용되지 않음).
+    4.  `agent.stats_tool.func`를 모킹하여 2단계에서 정의한 Z-점수 포함 리스트를 반환하도록 설정합니다.
+    5.  `await agent.process(mock_ctx)`를 호출합니다.
+    6.  `ctx.state["trend_results"]`에 저장된 리스트를 확인합니다.
+    7.  리스트의 첫 번째 항목이 Z-점수가 가장 높은 테마('B')이고, 마지막 항목이 Z-점수가 가장 낮은 테마('C')인지 확인합니다.
+*   **예상 결과:** 상태에 저장된 `trend_results` 리스트가 Z-점수 내림차순으로 정렬되어 있습니다.
+
+#### 5.3.6. 상위 N개 선택 테스트 (`TREND_TOP_N` 환경 변수)
+
+- [X]
+*   **테스트 케이스 ID:** `test_trend_agent_process_selects_top_n`
+*   **우선순위:** 높음
+*   **유형:** 단위 테스트 (모킹 사용)
+*   **설명:** `TREND_TOP_N` 환경 변수 값에 따라 정렬된 테마 리스트에서 상위 N개의 테마만 선택하는지 확인합니다.
+*   **단계:**
+    1.  `TrendAnalysisAgent` 인스턴스를 생성합니다.
+    2.  Z-점수 순서로 정렬된 5개의 테마 딕셔너리 리스트를 정의합니다.
+    3.  `InvocationContext` 객체를 모킹하고 `state["clustered_themes"]`를 설정합니다.
+    4.  `agent.stats_tool.func`를 모킹하여 2단계 리스트를 반환하도록 설정합니다.
+    5.  `os.getenv`를 모킹하여 `TREND_TOP_N`에 대해 "3"을 반환하도록 설정합니다.
+    6.  `await agent.process(mock_ctx)`를 호출합니다.
+    7.  `ctx.state["trend_results"]`에 저장된 리스트의 길이가 3인지 확인합니다.
+    8.  저장된 리스트가 원래 리스트의 상위 3개 항목과 일치하는지 확인합니다.
+*   **예상 결과:** `trend_results` 리스트에 상위 3개의 테마만 포함됩니다.
+
+#### 5.3.7. 상위 N개 선택 테스트 (기본값)
+
+- [X]
+*   **테스트 케이스 ID:** `test_trend_agent_process_selects_top_n_default`
+*   **우선순위:** 중간
+*   **유형:** 단위 테스트 (모킹 사용)
+*   **설명:** `TREND_TOP_N` 환경 변수가 설정되지 않았을 때 기본값(20)을 사용하여 상위 테마를 선택하는지 확인합니다.
+*   **단계:**
+    1.  `TrendAnalysisAgent` 인스턴스를 생성합니다.
+    2.  Z-점수 순서로 정렬된 25개의 테마 딕셔너리 리스트를 정의합니다.
+    3.  `InvocationContext` 객체를 모킹하고 `state["clustered_themes"]`를 설정합니다.
+    4.  `agent.stats_tool.func`를 모킹하여 2단계 리스트를 반환하도록 설정합니다.
+    5.  `os.getenv`를 모킹하여 `TREND_TOP_N`에 대해 None (`os.getenv`의 기본 동작) 또는 다른 키에 대한 호출 시 원래 동작을 유지하도록 설정합니다.
+    6.  `await agent.process(mock_ctx)`를 호출합니다.
+    7.  `ctx.state["trend_results"]`에 저장된 리스트의 길이가 20인지 확인합니다.
+*   **예상 결과:** `trend_results` 리스트에 상위 20개의 테마만 포함됩니다.
+
+#### 5.3.8. 상위 N개 선택 테스트 (유효하지 않은 값)
+
+- [X]
+*   **테스트 케이스 ID:** `test_trend_agent_process_selects_top_n_invalid`
+*   **우선순위:** 중간
+*   **유형:** 단위 테스트 (모킹 사용)
+*   **설명:** `TREND_TOP_N` 환경 변수 값이 숫자가 아니거나 음수일 때 기본값(20)을 사용하는지 확인합니다.
+*   **단계:**
+    1.  `TrendAnalysisAgent` 인스턴스를 생성합니다.
+    2.  Z-점수 순서로 정렬된 25개의 테마 딕셔너리 리스트를 정의합니다.
+    3.  `InvocationContext` 객체를 모킹하고 `state["clustered_themes"]` 설정, `agent.stats_tool.func` 모킹.
+    4.  `os.getenv`를 모킹하여 `TREND_TOP_N`에 대해 "abc" 또는 "-5"를 반환하도록 설정합니다.
+    5.  `await agent.process(mock_ctx)`를 호출하고 로그 출력을 캡처합니다.
+    6.  `ctx.state["trend_results"]`에 저장된 리스트의 길이가 20인지 확인합니다.
+    7.  로그 출력에 "Invalid TREND_TOP_N value" 또는 "TREND_TOP_N (...) is not positive" 와 유사한 경고 메시지가 포함되어 있는지 확인합니다.
+*   **예상 결과:** 경고 로그 발생 및 `trend_results` 리스트에 상위 20개 테마 포함.
+
+#### 5.3.9. 순위(Rank) 추가 테스트
+
+- [X]
+*   **테스트 케이스 ID:** `test_trend_agent_process_adds_rank`
+*   **우선순위:** 높음
+*   **유형:** 단위 테스트 (모킹 사용)
+*   **설명:** 선택된 상위 N개 테마 리스트의 각 딕셔너리에 'rank' 키가 1부터 N까지 순서대로 올바르게 추가되는지 확인합니다.
+*   **단계:**
+    1.  `TrendAnalysisAgent` 인스턴스를 생성합니다.
+    2.  Z-점수 순서로 정렬된 3개의 테마 딕셔너리 리스트를 정의합니다.
+    3.  `InvocationContext` 객체를 모킹하고 `state["clustered_themes"]` 설정, `agent.stats_tool.func` 모킹 (2단계 리스트 반환).
+    4.  `os.getenv` 모킹 (`TREND_TOP_N` = "3" 또는 기본값).
+    5.  `await agent.process(mock_ctx)`를 호출합니다.
+    6.  `ctx.state["trend_results"]`에 저장된 리스트를 확인합니다.
+    7.  첫 번째 항목의 `rank`가 1인지 확인합니다.
+    8.  두 번째 항목의 `rank`가 2인지 확인합니다.
+    9.  세 번째 항목의 `rank`가 3인지 확인합니다.
+*   **예상 결과:** `trend_results` 리스트의 각 항목에 1부터 시작하는 올바른 `rank` 값이 추가됩니다.
+
+#### 5.3.10. 최종 상태 저장 및 성공 메시지 테스트
+
+- [X]
+*   **테스트 케이스 ID:** `test_trend_agent_process_saves_state_and_returns_success`
+*   **우선순위:** 높음
+*   **유형:** 단위 테스트 (모킹 사용)
+*   **설명:** 모든 처리가 성공적으로 완료되었을 때, 최종 `ranked_themes` 리스트가 `ctx.state["trend_results"]`에 저장되고, 적절한 성공 메시지 문자열이 반환되는지 확인합니다.
+*   **단계:**
+    1.  `TrendAnalysisAgent` 인스턴스를 생성합니다.
+    2.  테스트용 `clustered_themes` 리스트 정의.
+    3.  `InvocationContext` 객체를 모킹하고 `state["clustered_themes"]` 설정.
+    4.  `agent.stats_tool.func`를 모킹하여 Z-점수 포함 리스트 반환 설정.
+    5.  `os.getenv` 모킹 (예: `TREND_TOP_N` = "5").
+    6.  `await agent.process(mock_ctx)`를 호출합니다.
+    7.  `mock_ctx.state` 딕셔너리에 `trend_results` 키가 존재하는지 확인합니다.
+    8.  `mock_ctx.state["trend_results"]` 값이 예상되는 최종 순위 리스트 (정렬, 상위 N개 선택, rank 추가 완료)와 일치하는지 확인합니다.
+    9.  반환된 문자열이 "Trend analysis complete. Top 5 trends identified and saved." 와 유사한 형식인지 확인합니다.
+*   **예상 결과:** 최종 결과가 상태에 저장되고, 성공 메시지가 반환됩니다. 
