@@ -180,23 +180,23 @@
     - [X] `theme_news_agent/sub_agents/trend_analysis/agent.py`에 `TrendAnalysisAgent` 클래스 정의 (`google.adk.Agent` 상속).
     - [X] `__init__`에서 통계 분석 도구 인스턴스화.
 
-- [ ] **5.2 통계 분석 도구 구현 (`StatisticalAnalysisTool`):**
-    - [ ] `theme_news_agent/sub_agents/trend_analysis/tools/stats_tool.py` 생성.
-    - [ ] `@Tool` 데코레이터 적용 함수 정의: `calculate_trends(current_themes: List[Dict]) -> List[Dict]`.
-    - [ ] **과거 데이터 관리:**
-        - 함수 내에서 과거 데이터 로드 로직 구현 (환경 변수 `HISTORICAL_DATA_PATH` 사용). 파일 없으면 빈 데이터로 시작. JSON 형식 사용.
-        - 과거 데이터 구조 정의 (예: `{ "테마명": {"mentions_history": [과거 언급량 리스트], "avg": 평균, "std": 표준편차} }`).
-    - [ ] **Z-점수 계산:**
-        - `current_themes`의 각 테마에 대해:
-            - 과거 데이터에서 해당 테마의 `avg`, `std` 조회.
-            - `z = (current_mentions - avg) / std` 계산. (과거 데이터 없거나 std=0일 경우 z=0 또는 다른 값으로 처리).
-        - 계산된 z-점수를 현재 테마 데이터에 추가.
-    - [ ] **과거 데이터 업데이트:**
-        - 현재 테마 언급량을 과거 데이터의 `mentions_history`에 추가.
-        - 업데이트된 `mentions_history로 새로운 `avg`, `std` 계산 및 저장.
-        - 변경된 과거 데이터를 파일에 다시 저장.
-        - 변경된 과거 데이터를 파일에 다시 저장.
-    - [ ] Z-점수가 추가된 테마 리스트 반환.
+- [X] **5.2 통계 분석 도구 구현 (`StatisticalAnalysisTool`):** # 체크박스 수정
+    - [X] `theme_news_agent/sub_agents/trend_analysis/tools/stats_tool.py` 생성.
+    - [X] `@Tool` 데코레이터 적용 함수 정의: `calculate_trends(current_themes: List[Dict]) -> List[Dict]`. # 실제로는 FunctionTool 사용
+    - [X] **과거 데이터 관리:**
+        - [X] 함수 내에서 과거 데이터 로드 로직 구현 (환경 변수 `HISTORICAL_DATA_PATH` 사용). 파일 없으면 빈 데이터로 시작. JSON 형식 사용.
+        - [X] 과거 데이터 구조 정의 (예: `{ \"테마명\": {\"mentions_history\": [과거 언급량 리스트], \"avg\": 평균, \"std\": 표준편차} }`).
+    - [X] **Z-점수 계산:**
+        - [X] `current_themes`의 각 테마에 대해:
+            - [X] 과거 데이터에서 해당 테마의 `avg`, `std` 조회.
+            - [X] `z = (current_mentions - avg) / std` 계산. (과거 데이터 없거나 std=0일 경우 z=0 또는 다른 값으로 처리).
+        - [X] 계산된 z-점수를 현재 테마 데이터에 추가.
+    - [X] **과거 데이터 업데이트:**
+        - [X] 현재 테마 언급량을 과거 데이터의 `mentions_history`에 추가.
+        - [X] 업데이트된 `mentions_history로 새로운 `avg`, `std` 계산 및 저장.
+        - [X] 변경된 과거 데이터를 파일에 다시 저장.
+        - [X] 변경된 과거 데이터를 파일에 다시 저장.
+    - [X] Z-점수가 추가된 테마 리스트 반환.
 
 - [ ] **5.3 에이전트 로직 구현:**
     - [ ] `TrendAnalysisAgent.process` 메서드 구현:
