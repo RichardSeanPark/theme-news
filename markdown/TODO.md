@@ -176,9 +176,9 @@
 
 ## 5단계: 트렌드 분석 에이전트 구현
 
-- [ ] **5.1 `TrendAnalysisAgent` 정의:**
-    - [ ] `theme_news_agent/sub_agents/trend_analysis/agent.py`에 `TrendAnalysisAgent` 클래스 정의 (`google.adk.Agent` 상속).
-    - [ ] `__init__`에서 통계 분석 도구 인스턴스화.
+- [X] **5.1 `TrendAnalysisAgent` 정의:**
+    - [X] `theme_news_agent/sub_agents/trend_analysis/agent.py`에 `TrendAnalysisAgent` 클래스 정의 (`google.adk.Agent` 상속).
+    - [X] `__init__`에서 통계 분석 도구 인스턴스화.
 
 - [ ] **5.2 통계 분석 도구 구현 (`StatisticalAnalysisTool`):**
     - [ ] `theme_news_agent/sub_agents/trend_analysis/tools/stats_tool.py` 생성.

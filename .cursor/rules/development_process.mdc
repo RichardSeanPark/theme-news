@@ -12,7 +12,7 @@ alwaysApply: false
 1.  **시작 전 분석**: 각 TODO 항목 작업을 시작하기 전에, 현재 프로젝트의 **모든 코드**를 **아주 자세히 분석**하여 전체적인 맥락을 파악합니다.
 2.  **환경 활성화**: 작업을 시작하기 전에 **반드시** `conda activate theme` 명령을 사용하여 'theme' Anaconda 환경을 활성화합니다. (터미널 사용 가능 시)
 3.  **TODO 항목 확인**: [markdown/TODO.md](mdc:markdown/TODO.md) 파일을 참조하여 현재 진행해야 할 **첫 번째 미완료 항목**을 식별합니다. 한 번에 하나의 항목만 처리합니다.
-4.  **코드 구현/수정**: 식별된 TODO 항목의 요구사항에 맞춰 코드를 구현하거나 수정합니다.
+4.  **코드 구현/수정**: 식별된 TODO 항목의 요구사항에 맞춰 코드를 구현하거나 수정합니다. agent 개발할 경우 google-adk 문서를 반드시 준수하면서 코드 구현.
 5.  **테스트 가이드 분석**: 코드 구현/수정 완료 후, [markdown/testcase-guide.md](mdc:markdown/testcase-guide.md) 파일을 **아주 자세히 분석**하여 현재 완료된 TODO 항목과 관련된 테스트 케이스 및 절차를 파악합니다.
 6.  **테스트케이스문서 작성**: 분석된 `testcase-guide.md` 내용에 따라 @markdown/testcase2.md 파일에 테스트 항목을 추가합니다. @markdown/testcase.md 참조.
 7. **테스트 코드 작성**: 분석된 `testcase-guide.md` 내용에 따라 @markdown/testcase2.md 파일에 맞는 테스트 코드를 작성합니다.

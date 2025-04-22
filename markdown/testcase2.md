@@ -420,4 +420,33 @@
     5.  `await agent.process(mock_ctx)`를 호출합니다.
     6.  로그 출력에 "클러스터링 프롬프트 생성 중 오류 발생" 과 유사한 오류 메시지가 있는지 확인합니다.
     7.  반환된 메시지에 "클러스터링 프롬프트 생성 중 오류 발생:" 과 예외 메시지가 포함되어 있는지 확인합니다.
-*   **예상 결과:** 오류 로그 발생 및 오류 메시지 반환. 
+*   **예상 결과:** 오류 로그 발생 및 오류 메시지 반환.
+
+## 5단계: 트렌드 분석 에이전트 구현
+
+### 5.1 `TrendAnalysisAgent` 정의
+
+#### 5.1.1. `TrendAnalysisAgent` 객체 생성 확인
+
+- [X]
+*   **테스트 케이스 ID:** `test_trend_analysis_agent_creation`
+*   **우선순위:** 높음
+*   **유형:** 단위 테스트
+*   **설명:** `TrendAnalysisAgent` 클래스의 인스턴스가 성공적으로 생성되는지 확인합니다.
+*   **단계:**
+    1.  `theme_news_agent.sub_agents.trend_analysis.agent` 모듈에서 `TrendAnalysisAgent` 클래스를 임포트합니다.
+    2.  `agent = TrendAnalysisAgent()` 코드를 실행하여 인스턴스를 생성합니다.
+    3.  생성된 `agent` 객체가 `TrendAnalysisAgent` 클래스의 인스턴스인지 확인합니다 (예: `isinstance(agent, TrendAnalysisAgent)`).
+*   **예상 결과:** `TrendAnalysisAgent` 객체가 오류 없이 생성됩니다.
+
+#### 5.1.2. `__init__` 속성 확인 (description)
+
+- [X]
+*   **테스트 케이스 ID:** `test_trend_analysis_agent_init_attributes`
+*   **우선순위:** 높음
+*   **유형:** 단위 테스트
+*   **설명:** 생성된 `TrendAnalysisAgent` 인스턴스의 `description` 속성이 `__init__` 메서드에서 설정한 값과 일치하는지 확인합니다.
+*   **단계:**
+    1.  `TrendAnalysisAgent` 인스턴스를 생성합니다.
+    2.  `agent.description` 속성이 `__init__`에 지정된 설명 문자열 ("Analyzes theme trends based on historical data and Z-scores.")과 일치하는지 확인합니다.
+*   **예상 결과:** 인스턴스의 `description` 속성이 `__init__` 메서드에서 정의한 값과 정확히 일치합니다. 
