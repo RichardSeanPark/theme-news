@@ -278,4 +278,35 @@
     8.  `agent.process(mock_ctx)`를 호출합니다.
     9.  로그 출력에 "키워드 빈도 계산 중 오류 발생" 과 유사한 오류 메시지가 포함되어 있는지 확인합니다.
     10. `mock_ctx.state["keyword_results"]`가 빈 리스트(`[]`)인지 확인합니다.
-*   **예상 결과:** 오류 로깅 후, `ctx.state["keyword_results"]`에 빈 리스트가 저장됩니다. 
+*   **예상 결과:** 오류 로깅 후, `ctx.state["keyword_results"]`에 빈 리스트가 저장됩니다.
+
+## 4단계: 테마 클러스터링 에이전트 구현
+
+### 4.1 `ThemeClusteringAgent` 정의
+
+#### 4.1.1. `ThemeClusteringAgent` 객체 생성 확인
+
+- [X]
+*   **테스트 케이스 ID:** `test_theme_clustering_agent_creation`
+*   **우선순위:** 높음
+*   **유형:** 단위 테스트
+*   **설명:** `ThemeClusteringAgent` 클래스의 인스턴스가 성공적으로 생성되는지 확인합니다.
+*   **단계:**
+    1.  `theme_news_agent.sub_agents.theme_clustering.agent` 모듈에서 `ThemeClusteringAgent` 클래스를 임포트합니다.
+    2.  `agent = ThemeClusteringAgent()` 코드를 실행하여 인스턴스를 생성합니다.
+    3.  생성된 `agent` 객체가 `ThemeClusteringAgent` 클래스의 인스턴스인지 확인합니다 (예: `isinstance(agent, ThemeClusteringAgent)`).
+*   **예상 결과:** `ThemeClusteringAgent` 객체가 오류 없이 생성됩니다.
+
+#### 4.1.2. `__init__` 속성 확인
+
+- [X]
+*   **테스트 케이스 ID:** `test_theme_clustering_agent_init_attributes`
+*   **우선순위:** 높음
+*   **유형:** 단위 테스트
+*   **설명:** 생성된 `ThemeClusteringAgent` 인스턴스의 `model`, `instruction`, `description` 속성이 `__init__` 메서드에서 설정한 값과 일치하는지 확인합니다.
+*   **단계:**
+    1.  `ThemeClusteringAgent` 인스턴스를 생성합니다.
+    2.  `agent.model` 속성이 `__init__`에 지정된 모델명 (예: 'gemini-1.5-flash-latest')과 일치하는지 확인합니다.
+    3.  `agent.instruction` 속성이 `__init__`에 지정된 지침 문자열과 일치하는지 확인합니다.
+    4.  `agent.description` 속성이 `__init__`에 지정된 설명 문자열과 일치하는지 확인합니다.
+*   **예상 결과:** 인스턴스의 `model`, `instruction`, `description` 속성이 `__init__` 메서드에서 정의한 값과 정확히 일치합니다. 

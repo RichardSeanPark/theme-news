@@ -157,9 +157,9 @@
 
 ## 4단계: 테마 클러스터링 에이전트 구현
 
-- [ ] **4.1 `ThemeClusteringAgent` 정의:**
-    - [ ] `theme_news_agent/sub_agents/theme_clustering/agent.py`에 `ThemeClusteringAgent` 클래스 정의 (`google.adk.LlmAgent` 상속).
-    - [ ] `__init__`에서 모델, 설명, 지침 설정.
+- [X] **4.1 `ThemeClusteringAgent` 정의:**
+    - [X] `theme_news_agent/sub_agents/theme_clustering/agent.py`에 `ThemeClusteringAgent` 클래스 정의 (`google.adk.LlmAgent` 상속).
+    - [X] `__init__`에서 모델, 설명, 지침 설정.
 
 - [ ] **4.2 클러스터링 프롬프트 정의:**
     - [ ] `theme_news_agent/sub_agents/theme_clustering/prompt.py`에 프롬프트 정의 (`get_clustering_prompt`).
