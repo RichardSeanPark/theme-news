@@ -309,4 +309,63 @@
     2.  `agent.model` 속성이 `__init__`에 지정된 모델명 (예: 'gemini-1.5-flash-latest')과 일치하는지 확인합니다.
     3.  `agent.instruction` 속성이 `__init__`에 지정된 지침 문자열과 일치하는지 확인합니다.
     4.  `agent.description` 속성이 `__init__`에 지정된 설명 문자열과 일치하는지 확인합니다.
-*   **예상 결과:** 인스턴스의 `model`, `instruction`, `description` 속성이 `__init__` 메서드에서 정의한 값과 정확히 일치합니다. 
+*   **예상 결과:** 인스턴스의 `model`, `instruction`, `description` 속성이 `__init__` 메서드에서 정의한 값과 정확히 일치합니다.
+
+### 4.2 클러스터링 프롬프트 정의
+
+#### 4.2.1. `CLUSTERING_PROMPT_TEMPLATE` 상수 확인
+
+- [X]
+*   **테스트 케이스 ID:** `test_clustering_prompt_template_content`
+*   **우선순위:** 높음
+*   **유형:** 단위 테스트
+*   **설명:** `prompt.py`에 정의된 `CLUSTERING_PROMPT_TEMPLATE` 상수가 필요한 키 문구들을 포함하는지 확인합니다.
+*   **단계:**
+    1.  `theme_news_agent.sub_agents.theme_clustering.prompt` 모듈에서 `CLUSTERING_PROMPT_TEMPLATE`을 임포트합니다.
+    2.  해당 상수가 문자열 타입인지 확인합니다.
+    3.  상수 내용에 "JSON 형식의 배열", "theme", "keywords", "mentions", "{keyword_data_str}" 등의 키 문구가 포함되어 있는지 확인합니다.
+*   **예상 결과:** 상수가 올바른 키 문구들을 포함한 문자열로 정의되어 있습니다.
+
+#### 4.2.2. `get_clustering_prompt` 함수 - 정상 입력 테스트
+
+- [X]
+*   **테스트 케이스 ID:** `test_get_clustering_prompt_normal_input`
+*   **우선순위:** 높음
+*   **유형:** 단위 테스트
+*   **설명:** `get_clustering_prompt` 함수가 정상적인 키워드 빈도 리스트를 입력받았을 때, 프롬프트 템플릿의 `{keyword_data_str}` 부분을 올바르게 포맷팅하여 반환하는지 확인합니다.
+*   **단계:**
+    1.  `get_clustering_prompt` 함수를 임포트합니다.
+    2.  테스트용 키워드 빈도 리스트를 생성합니다 (예: `[{"keyword": "AI", "frequency": {"total": 50}}, {"keyword": "ML", "frequency": {"total": 30}}]`).
+    3.  함수를 호출하여 결과를 얻습니다.
+    4.  반환된 문자열이 `CLUSTERING_PROMPT_TEMPLATE`의 기본 구조를 유지하는지 확인합니다.
+    5.  반환된 문자열 내에 포맷팅된 키워드 데이터 문자열 (예: "- AI (50회 언급)\n- ML (30회 언급)")이 포함되어 있는지 확인합니다.
+*   **예상 결과:** 키워드 데이터가 포함된 완전한 프롬프트 문자열이 반환됩니다.
+
+#### 4.2.3. `get_clustering_prompt` 함수 - 빈 입력 테스트
+
+- [X]
+*   **테스트 케이스 ID:** `test_get_clustering_prompt_empty_input`
+*   **우선순위:** 중간
+*   **유형:** 단위 테스트
+*   **설명:** `get_clustering_prompt` 함수가 빈 키워드 리스트(`[]`)를 입력받았을 때, `{keyword_data_str}` 부분이 "분석할 키워드가 없습니다."로 대체되어 반환되는지 확인합니다.
+*   **단계:**
+    1.  `get_clustering_prompt` 함수를 임포트합니다.
+    2.  빈 리스트 (`[]`)를 인자로 함수를 호출합니다.
+    3.  반환된 문자열에 "분석할 키워드가 없습니다."가 포함되어 있는지 확인합니다.
+    4.  반환된 문자열이 여전히 `CLUSTERING_PROMPT_TEMPLATE`의 기본 구조를 유지하는지 확인합니다.
+*   **예상 결과:** "분석할 키워드가 없습니다." 메시지가 포함된 프롬프트 문자열이 반환됩니다.
+
+#### 4.2.4. `get_clustering_prompt` 함수 - 비정상 키 입력 테스트
+
+- [X]
+*   **테스트 케이스 ID:** `test_get_clustering_prompt_malformed_input`
+*   **우선순위:** 중간
+*   **유형:** 단위 테스트
+*   **설명:** 입력 리스트 내 딕셔너리에 "keyword", "frequency", "total" 키가 일부 누락된 경우에도 오류 없이 기본값("N/A", 0)으로 처리되어 프롬프트가 생성되는지 확인합니다.
+*   **단계:**
+    1.  `get_clustering_prompt` 함수를 임포트합니다.
+    2.  키가 누락된 딕셔너리를 포함하는 리스트를 생성합니다 (예: `[{"keyword": "AI"}, {"frequency": {"total": 30}}, {}]`).
+    3.  함수를 호출하여 결과를 얻습니다.
+    4.  반환된 문자열에 기본값으로 처리된 키워드 정보 (예: "- AI (0회 언급)\n- N/A (30회 언급)\n- N/A (0회 언급)")가 포함되어 있는지 확인합니다.
+    5.  함수 실행 중 예외가 발생하지 않았는지 확인합니다.
+*   **예상 결과:** 누락된 키가 기본값으로 처리되어 포함된 프롬프트 문자열이 반환됩니다. 

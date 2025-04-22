@@ -161,10 +161,10 @@
     - [X] `theme_news_agent/sub_agents/theme_clustering/agent.py`에 `ThemeClusteringAgent` 클래스 정의 (`google.adk.LlmAgent` 상속).
     - [X] `__init__`에서 모델, 설명, 지침 설정.
 
-- [ ] **4.2 클러스터링 프롬프트 정의:**
-    - [ ] `theme_news_agent/sub_agents/theme_clustering/prompt.py`에 프롬프트 정의 (`get_clustering_prompt`).
-    - [ ] `Design.md` 섹션 4 (3) 및 `Dev_Plan.md` 섹션 5.3 참고하여 프롬프트 작성. 입력으로 키워드 목록(언급량 포함)을 받고, 의미적으로 유사/연관된 키워드를 그룹화하고 각 그룹에 이해하기 쉬운 테마 이름을 부여하도록 지시.
-    - [ ] 출력 형식을 명확히 지정: **반드시 `Design.md` 섹션 4 (3)의 예시와 같은 JSON 형식의 배열로 반환**하도록 요구. `[{"theme": "...", "keywords": ["...", ...], "mentions": N}, ...]`.
+- [X] **4.2 클러스터링 프롬프트 정의:**
+    - [X] `theme_news_agent/sub_agents/theme_clustering/prompt.py`에 프롬프트 정의 (`get_clustering_prompt`).
+    - [X] `Design.md` 섹션 4 (3) 및 `Dev_Plan.md` 섹션 5.3 참고하여 프롬프트 작성. 입력으로 키워드 목록(언급량 포함)을 받고, 의미적으로 유사/연관된 키워드를 그룹화하고 각 그룹에 이해하기 쉬운 테마 이름을 부여하도록 지시.
+    - [X] 출력 형식을 명확히 지정: **반드시 `Design.md` 섹션 4 (3)의 예시와 같은 JSON 형식의 배열로 반환**하도록 요구. `[{"theme": "...", "keywords": ["...", ...], "mentions": N}, ...]`.
 
 - [ ] **4.3 에이전트 로직 구현:**
     - [ ] `ThemeClusteringAgent.process` 메서드 구현:
