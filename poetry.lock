@@ -2150,6 +2150,18 @@ typing-extensions = "*"
 dev = ["black", "build", "flake8", "flake8-black", "isort", "jupyter-console", "mkdocs", "mkdocs-include-markdown-plugin", "mkdocstrings[python]", "pytest", "pytest-asyncio ; python_version >= \"3.4\"", "pytest-trio ; python_version >= \"3.7\"", "sphinx", "toml", "tox", "trio", "trio ; python_version > \"3.6\"", "trio-typing ; python_version > \"3.6\"", "twine", "twisted", "validate-pyproject[all]"]
 
 [[package]]
+name = "pynaver"
+version = "0.0.10"
+description = "Naver Open API Python Wrapper"
+optional = false
+python-versions = "*"
+groups = ["main"]
+files = [
+    {file = "PyNaver-0.0.10-py3-none-any.whl", hash = "sha256:5ba598fc3e457c8999c592322f6d2694e58e48b553678702ff4662671b9bd686"},
+    {file = "PyNaver-0.0.10.tar.gz", hash = "sha256:a938e2f72ed2909010bc1553f1c657bb974f16fe0b94ca7d85ef3be8284b89dc"},
+]
+
+[[package]]
 name = "pyparsing"
 version = "3.2.3"
 description = "pyparsing module - Classes and methods to define and execute parsing grammars"
@@ -3085,4 +3097,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.13"
-content-hash = "5aa6d610ac29f7a206b52d61ccaf247ea960a56b7e457c1e5a44d6b2e7ce9564"
+content-hash = "b3ce99e669da449cba25efac978e95e1d009864ce0fcc8a64bdc2860775434e5"

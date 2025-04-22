@@ -1,7 +1,14 @@
+import json
+import logging
 from google.adk.agents.llm_agent import LlmAgent
+from .prompt import get_clustering_prompt # 프롬프트 생성 함수 임포트
 
 # TODO: 프롬프트 로딩 로직 추가 (4.2단계)
 # from .prompt import get_clustering_prompt
+
+# 로거 설정
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO) # 기본 로깅 레벨 설정
 
 class ThemeClusteringAgent(LlmAgent):
     """
@@ -16,29 +23,26 @@ class ThemeClusteringAgent(LlmAgent):
             description="키워드 클러스터링 및 테마 이름 생성 에이전트"
         )
 
-    def process(self, ctx):
+    async def process(self, ctx):
         """
-        키워드 데이터를 로드하고, LLM을 호출하여 테마 클러스터링을 수행합니다.
-        결과를 파싱하여 세션 상태에 저장합니다. (4.3단계에서 구현)
+        키워드 데이터를 로드하고, 클러스터링 프롬프트를 생성하여 반환합니다.
+        (ADK 프레임워크가 이 프롬프트를 사용하여 LLM 호출을 수행할 것으로 예상)
         """
-        # TODO: 4.3단계에서 구현될 내용
-        # keyword_results = ctx.state.get("keyword_results")
-        # if not keyword_results:
-        #     return "키워드 추출 결과가 없습니다."
+        logger.info("테마 클러스터링 에이전트 시작...")
+        keyword_results = ctx.state.get("keyword_results")
 
-        # # LLM 입력 생성 (키워드 데이터를 프롬프트 형식에 맞게 변환)
-        # # prompt = get_clustering_prompt(keyword_results)
-        # prompt = "..." # 임시 프롬프트
+        if not keyword_results:
+            logger.warning("상태에서 'keyword_results'를 찾을 수 없거나 비어 있습니다.")
+            # 오류 상황을 어떻게 처리할지 ADK 정책 확인 필요 (예: 예외 발생, 특정 메시지 반환)
+            # 여기서는 이전과 같이 메시지 반환
+            return "키워드 추출 결과가 없어 테마 클러스터링을 진행할 수 없습니다."
 
-        # try:
-        #     response = self.generate_content(prompt)
-        #     # TODO: LLM 응답 파싱 및 유효성 검사
-        #     clustered_themes = [...] # 파싱된 결과
-        #     # TODO: 4.4단계 - 상태 저장
-        #     # ctx.state["clustered_themes"] = clustered_themes
-        #     return f"테마 클러스터링 완료. {len(clustered_themes)}개의 테마 발견."
-        # except Exception as e:
-        #     # TODO: 오류 처리 로직 강화
-        #     return f"테마 클러스터링 중 오류 발생: {e}"
-
-        return "ThemeClusteringAgent.process 미구현 상태" # 임시 반환값
+        # LLM 입력 생성
+        try:
+            prompt = get_clustering_prompt(keyword_results)
+            logger.info("클러스터링 프롬프트 생성 완료.")
+            return prompt # 생성된 프롬프트를 반환
+        except Exception as e:
+            logger.error(f"클러스터링 프롬프트 생성 중 오류 발생: {e}", exc_info=True)
+            # 프롬프트 생성 실패 시 오류 메시지 반환
+            return f"클러스터링 프롬프트 생성 중 오류 발생: {e}"
